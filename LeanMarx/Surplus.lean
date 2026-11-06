@@ -41,6 +41,22 @@ noncomputable def surplusValue (v b : ι → ℝ) (x : j → ℝ) : ℝ :=
 noncomputable def wageGoodsValue (v b : ι → ℝ) (x : j → ℝ) : ℝ :=
   valueOfLabourPower v b * T.employment x
 
+/-- Constant capital: labour embodied in the material inputs consumed. -/
+noncomputable def constantCapital (v : ι → ℝ) (x : j → ℝ) : ℝ :=
+  v ⬝ᵥ (T.A *ᵥ x)
+
+/-- Value rate of profit: surplus value over constant plus variable capital.
+This is the rate a production period earns on the capital advanced, and can
+serve as the surplus rate of an investment step. -/
+noncomputable def valueProfitRate (v b : ι → ℝ) (x : j → ℝ) : ℝ :=
+  T.surplusValue v b x / (T.constantCapital v x + T.wageGoodsValue v b x)
+
+theorem valueProfitRate_pos_iff {v b : ι → ℝ} {x : j → ℝ}
+    (hden : 0 < T.constantCapital v x + T.wageGoodsValue v b x) :
+    0 < T.valueProfitRate v b x ↔ 0 < T.surplusValue v b x := by
+  unfold valueProfitRate
+  rw [div_pos_iff_of_pos_right hden]
+
 theorem surplusValue_eq_wageGoods (v b : ι → ℝ) (x : j → ℝ) :
     T.surplusValue v b x = T.employment x - T.wageGoodsValue v b x := rfl
 

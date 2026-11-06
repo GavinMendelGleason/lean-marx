@@ -4,6 +4,7 @@ import LeanMarx.Surplus
 import LeanMarx.Distribution
 import LeanMarx.Circuit
 import LeanMarx.Dynamics
+import LeanMarx.Investment
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -45,7 +46,15 @@ Differential rates concentrate: the dominant rate's share tends to one, so
 the circuit cannot create a Pareto law — it either preserves the initial
 distribution or collapses it to a point mass.
 
-## 4. Surplus value (`LeanMarx/Surplus`)
+## 4. Investment and preferential attachment (`LeanMarx.Investment`)
+
+Agents invest capital; a period's surplus `π K` is distributed by an
+allocation rule. Proportional allocation is scale-invariant and preserves
+expected shares. A strictly preferential rule raises the favoured agent's
+share, and winner-takes-all drives the winner's share to one. A power law
+over agents needs entry, not just preferential allocation among a fixed set.
+
+## 5. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

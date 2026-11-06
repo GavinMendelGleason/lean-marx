@@ -29,3 +29,13 @@ import LeanMarx
 #print axioms LeanMarx.gini_wealthAt_uniform
 #print axioms LeanMarx.sum_wealthAt_uniform
 #print axioms LeanMarx.tendsto_share_dominant
+#print axioms LeanMarx.attachProb_strictMono
+#print axioms LeanMarx.sum_attachProb
+#print axioms LeanMarx.investStep_attach
+#print axioms LeanMarx.investStep_attach_share
+#print axioms LeanMarx.expected_share_attachment
+#print axioms LeanMarx.preferential_increases_share
+#print axioms LeanMarx.winner_share_increases
+#print axioms LeanMarx.winnerPath_share
+#print axioms LeanMarx.tendsto_winnerPath_share
+#print axioms LeanMarx.ProductionTable.valueProfitRate_pos_iff

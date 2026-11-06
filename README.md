@@ -163,6 +163,38 @@ circuit does not contain — stochastic shocks with a reflecting barrier or
 reset, or a rich-get-richer mechanism. Independent multiplicative shocks alone
 (Gibrat) point towards a lognormal cross-section.
 
+## Investment and preferential attachment
+
+`LeanMarx/Investment.lean` lets agents invest capital and distributes the
+period's surplus. Total investment is `K = Σ I i`; the surplus is `π K` and an
+allocation `s` with `Σ s = 1` moves each agent's capital
+
+```
+M i  →  M i + ΔM i,      ΔM i = π K · s i.
+```
+
+The rate `π` can be the table's value rate of profit
+(`ProductionTable.valueProfitRate`).
+
+| Result | Statement |
+|---|---|
+| `investStep_attach` | proportional allocation (`s i = M i / W`) scales every agent by `1 + πK/W` |
+| `investStep_attach_share` | hence shares are unchanged |
+| `attachProb_strictMono` | richer agents are strictly more likely to receive the next unit |
+| `expected_share_attachment` | random proportional attachment preserves the expected share exactly |
+| `preferential_increases_share` | if `s j > M j / W` and `Δ > 0`, the share of `j` rises |
+| `winner_share_increases` | winner-takes-all raises the winner's share |
+| **`tendsto_winnerPath_share`** | with a positive surplus, the winner's share tends to `1` |
+
+So preferential allocation is a real rich-get-richer mechanism: proportional
+attachment is scale-invariant (and preserves expected shares), while any
+strictly preferential rule raises the favoured share, and winner-takes-all
+concentrates into a point mass. A **power law over agents** is still not
+produced: with a fixed finite set, proportional attachment is a Pólya urn
+(Dirichlet limit), and preferential rules degenerate. The Yule/Simon power law
+needs entry — new agents taking a share of the surplus — which is not
+formalised here.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -186,6 +218,7 @@ LeanMarx/Surplus.lean        value of labour power, surplus value
 LeanMarx/Distribution.lean   mixed agents, income shares, Gini bound
 LeanMarx/Circuit.lean        one-turn circuit, share and Gini invariance
 LeanMarx/Dynamics.lean       balanced growth, iterated circuit, concentration
+LeanMarx/Investment.lean     investment, surplus allocation, preferential attachment
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -207,7 +240,8 @@ lakefile.toml                Mathlib pinned by revision
 - The population is finite, so the income distribution is an empirical
   vector; no distributional law (power law, lognormal, etc.) is derived or
   assumed.
-- Time is deterministic and discrete: balanced growth and a multiplicative
-  circuit, with no stochastic shocks, saving behaviour, entry, or endogenous
-  profit rates. The only limit theorem is the concentration of shares under a
-  dominant rate.
+- Time is deterministic and discrete: balanced growth, a multiplicative
+  circuit, and a surplus-allocation investment step, with no stochastic
+  shocks, saving behaviour, entry, or endogenous profit rates. The limit
+  theorems are concentration of shares under a dominant rate and under
+  winner-takes-all.
