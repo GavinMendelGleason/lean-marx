@@ -64,3 +64,12 @@ import LeanMarx
 #print axioms LeanMarx.entry_startup_bankrupt
 #print axioms LeanMarx.entry_startup_survives
 #print axioms LeanMarx.sum_entryCapital
+#print axioms LeanMarx.normalCdf_zero
+#print axioms LeanMarx.deathProb_nonneg
+#print axioms LeanMarx.deathProb_le_one
+#print axioms LeanMarx.deathProb_antitone
+#print axioms LeanMarx.deathProb_avg
+#print axioms LeanMarx.deathProb_below_avg
+#print axioms LeanMarx.deathProb_above_avg
+#print axioms LeanMarx.sum_deviation_eq_zero
+#print axioms LeanMarx.expectedGrowth_le_of_le

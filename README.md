@@ -280,6 +280,36 @@ Entry, exit and growth are now all present. A stationary power law still
 requires a stochastic distribution of startup outcomes: the deterministic
 model either freezes shares or concentrates them.
 
+## Stochastic death around the average
+
+`LeanMarx/Death.lean` makes death a probability. A producer's rate `r` is
+compared with the capital-weighted average `r̄`, and the death probability is
+the lower tail of a Gaussian centred at `r̄`:
+
+```
+deathProb r r̄ σ = Φ ((r̄ - r) / σ),
+```
+
+where `Φ` is the standard normal CDF (`normalCdf`, built from Mathlib's
+`gaussianPDFReal`).
+
+| Result | Statement |
+|---|---|
+| `normalCdf_zero` | `Φ 0 = 1/2` |
+| `deathProb_nonneg`, `deathProb_le_one` | death is a probability |
+| `deathProb_antitone` | lower rates die more often |
+| `deathProb_avg` | at the average, death is `1/2` |
+| `deathProb_below_avg` | below average, death is at least `1/2` |
+| `deathProb_above_avg` | above average, death is at most `1/2` |
+| `sum_deviation_eq_zero` | capital-weighted deviations from the average sum to zero |
+| `expectedGrowth_le_of_le` | expected growth is increasing in the rate |
+
+So the lower tail is pruned in proportion to how far a producer falls below
+the average, while the deviations balance exactly. This is the stochastic
+ingredient the deterministic selection models lacked. A stationary power law
+still needs the full stochastic process — entry, the law of motion at every
+date, and a stationary distribution — which is not derived here.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -307,6 +337,7 @@ LeanMarx/Investment.lean     investment, surplus allocation, preferential attach
 LeanMarx/Expectations.lean   investment by expected profit rates
 LeanMarx/Selection.lean      producers, bankruptcy, selection
 LeanMarx/Startups.lean       startup funding, entry, expected payoff
+LeanMarx/Death.lean          Gaussian death probability around the average
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -337,7 +368,8 @@ lakefile.toml                Mathlib pinned by revision
   neutral; heterogeneous expectations change shares but no distribution of
   expectations is derived.
 - Producers are single-output columns with exogenous profit rates. Bankruptcy
-  is a one-period rule (`M' ≤ M`), and startups enter with a committed
-  fraction of an investor's wealth. There is no stochastic distribution of
-  startup outcomes or growth, so no stationary firm-size distribution is
+  is a one-period rule (`M' ≤ M`), startups enter with a committed fraction of
+  an investor's wealth, and death is a Gaussian probability around the average
+  rate. There is no full stochastic process (entry law, transition kernel,
+  stationary distribution), so no stationary firm-size distribution is
   derived.

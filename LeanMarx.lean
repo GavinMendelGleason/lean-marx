@@ -8,6 +8,7 @@ import LeanMarx.Investment
 import LeanMarx.Expectations
 import LeanMarx.Selection
 import LeanMarx.Startups
+import LeanMarx.Death
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -84,7 +85,18 @@ expected gross return satisfies `1 < p (1 + r)`. Entry adjoins a new producer
 index set, and the same exit rule applies to old producers and startups
 together.
 
-## 8. Surplus value (`LeanMarx/Surplus`)
+## 8. Stochastic death (`LeanMarx/Death`)
+
+Death is a probability, not a rule: a producer's rate is compared with the
+capital-weighted average `r̄`, and the death probability is the lower tail of a
+Gaussian centred at `r̄`, `Φ((r̄ - r)/σ)`. It is a probability in `[0,1]`,
+antitone in the rate, `1/2` at the average, above `1/2` below it and below
+`1/2` above it. Deviations from the average sum to zero, and expected growth
+is increasing in the rate. A stationary power law still needs a full
+stochastic process with entry; the module supplies the death rule and the
+one-period selection inequalities.
+
+## 9. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
