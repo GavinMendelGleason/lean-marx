@@ -195,6 +195,35 @@ produced: with a fixed finite set, proportional attachment is a Pólya urn
 needs entry — new agents taking a share of the surplus — which is not
 formalised here.
 
+## Investment by expected profit rates
+
+`LeanMarx/Expectations.lean` assumes investors allocate capital across
+activities in proportion to their **expected profit rates** `r : σ → ℝ`:
+
+```
+rateShare r a = r a / Σ b, r b,
+investIn M r i a = M i * rateShare r a,
+totalInvested M r a = (Σ i, M i) * rateShare r a.
+```
+
+| Result | Statement |
+|---|---|
+| `sum_rateShare` | the rate shares form a probability distribution |
+| `rateShare_strictMono` | a higher expected rate receives a larger share |
+| `totalInvested_eq` | aggregate investment in an activity is independent of the wealth distribution |
+| `expectedReturnRate_eq` | the expected return is `ρ̄ = (Σ r²) / (Σ r)` |
+| `expectedWealth_share` | common expectations leave every wealth share unchanged |
+| `expectedWealth_gini` | common expectations leave the Gini coefficient unchanged |
+| `share_increases_iff_above_average` | an investor gains share exactly when their expected return exceeds the average |
+
+So investing by expected profit rates is not by itself a distributional
+mechanism: with common expectations every investor earns the same
+rate-weighted average, so shares and inequality are frozen. What moves the
+distribution is **heterogeneous** expectations — an investor whose expected
+return is above the economy-wide average gains share, one below it loses.
+A Pareto law would require a specific persistent distribution of expected
+returns across investors, not merely rate-chasing.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -219,6 +248,7 @@ LeanMarx/Distribution.lean   mixed agents, income shares, Gini bound
 LeanMarx/Circuit.lean        one-turn circuit, share and Gini invariance
 LeanMarx/Dynamics.lean       balanced growth, iterated circuit, concentration
 LeanMarx/Investment.lean     investment, surplus allocation, preferential attachment
+LeanMarx/Expectations.lean   investment by expected profit rates
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -241,7 +271,10 @@ lakefile.toml                Mathlib pinned by revision
   vector; no distributional law (power law, lognormal, etc.) is derived or
   assumed.
 - Time is deterministic and discrete: balanced growth, a multiplicative
-  circuit, and a surplus-allocation investment step, with no stochastic
-  shocks, saving behaviour, entry, or endogenous profit rates. The limit
-  theorems are concentration of shares under a dominant rate and under
-  winner-takes-all.
+  circuit, a surplus-allocation investment step, and investment by expected
+  profit rates. There are no stochastic shocks, saving behaviour, entry, or
+  endogenous profit rates. The limit theorems are concentration of shares
+  under a dominant rate and under winner-takes-all.
+- Expectations are taken as given. Common expectations are distributionally
+  neutral; heterogeneous expectations change shares but no distribution of
+  expectations is derived.

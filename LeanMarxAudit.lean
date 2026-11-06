@@ -39,3 +39,10 @@ import LeanMarx
 #print axioms LeanMarx.winnerPath_share
 #print axioms LeanMarx.tendsto_winnerPath_share
 #print axioms LeanMarx.ProductionTable.valueProfitRate_pos_iff
+#print axioms LeanMarx.sum_rateShare
+#print axioms LeanMarx.rateShare_strictMono
+#print axioms LeanMarx.totalInvested_eq
+#print axioms LeanMarx.expectedReturnRate_eq
+#print axioms LeanMarx.expectedWealth_share
+#print axioms LeanMarx.expectedWealth_gini
+#print axioms LeanMarx.share_increases_iff_above_average

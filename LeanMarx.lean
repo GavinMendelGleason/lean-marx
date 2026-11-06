@@ -5,6 +5,7 @@ import LeanMarx.Distribution
 import LeanMarx.Circuit
 import LeanMarx.Dynamics
 import LeanMarx.Investment
+import LeanMarx.Expectations
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -54,7 +55,16 @@ expected shares. A strictly preferential rule raises the favoured agent's
 share, and winner-takes-all drives the winner's share to one. A power law
 over agents needs entry, not just preferential allocation among a fixed set.
 
-## 5. Surplus value (`LeanMarx/Surplus`)
+## 5. Expected profit rates (`LeanMarx/Expectations`)
+
+Investors allocate capital across activities in proportion to expected
+profit rates. Aggregate investment into an activity is independent of the
+wealth distribution; when all investors share the same expectations, every
+capital is multiplied by the same rate-weighted average, so shares and the
+Gini coefficient are invariant. Differences in wealth shares come from
+heterogeneous expectations: above-average expected returns gain share.
+
+## 6. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

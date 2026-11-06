@@ -188,31 +188,7 @@ theorem tendsto_winnerPath_share (j : κ) (Δ : ℝ) (w0 : κ → ℝ) (hΔ : 0 
     (hW0 : 0 < ∑ i, w0 i) :
     Tendsto (fun t => share (winnerPath j Δ w0 t) j) atTop (𝓝 1) := by
   simp_rw [winnerPath_share]
-  set a : ℝ := w0 j with ha
-  set b : ℝ := ∑ i, w0 i with hb
-  have hbpos : 0 < b := by rw [hb]; exact hW0
-  have h1 : Tendsto (fun t : ℕ => a / t + Δ) atTop (𝓝 Δ) := by
-    simpa using (tendsto_const_div_atTop_nhds_zero_nat (𝕜 := ℝ) a).add_const Δ
-  have h2 : Tendsto (fun t : ℕ => b / t + Δ) atTop (𝓝 Δ) := by
-    simpa using (tendsto_const_div_atTop_nhds_zero_nat (𝕜 := ℝ) b).add_const Δ
-  have h3 : Tendsto (fun t : ℕ => (a / t + Δ) / (b / t + Δ)) atTop (𝓝 1) := by
-    have h := h1.div h2 (by simpa using hΔ.ne')
-    have hfun2 : ((fun t : ℕ => a / t + Δ) / (fun t : ℕ => b / t + Δ))
-        = fun t : ℕ => (a / t + Δ) / (b / t + Δ) := by
-      funext t
-      rfl
-    rw [hfun2] at h
-    simpa only [div_self hΔ.ne'] using h
-  have heq : ∀ᶠ t : ℕ in atTop,
-      (a / t + Δ) / (b / t + Δ) = (a + t * Δ) / (b + t * Δ) := by
-    filter_upwards [eventually_ne_atTop (0 : ℕ)] with t ht0
-    have ht : (t : ℝ) ≠ 0 := by exact_mod_cast ht0
-    have hbden : b + (t : ℝ) * Δ ≠ 0 := by
-      have hpos : 0 < b + (t : ℝ) * Δ := by
-        have ht0' : 0 ≤ (t : ℝ) := Nat.cast_nonneg t
-        nlinarith
-      exact hpos.ne'
-    field_simp
-  exact h3.congr' heq
+  have h := tendsto_lin_ratio (w0 j) Δ hW0 hΔ
+  simpa [div_self hΔ.ne'] using h
 
 end LeanMarx

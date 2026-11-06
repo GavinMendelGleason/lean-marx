@@ -211,4 +211,33 @@ theorem tendsto_share_dominant (π : κ → ℝ) (w0 : κ → ℝ) (j : κ)
   rw [hfun]
   exact hlim
 
+/-- **Linear-over-linear asymptotics.** `(a + t c) / (b + t Δ)` tends to
+`c / Δ` for positive `b` and `Δ`.  This covers both the multiplicative circuit
+with a constant surplus and entry allocated by a fixed rule. -/
+theorem tendsto_lin_ratio (a c : ℝ) {b Δ : ℝ} (hb : 0 < b) (hΔ : 0 < Δ) :
+    Tendsto (fun t : ℕ => (a + t * c) / (b + t * Δ)) atTop (𝓝 (c / Δ)) := by
+  have h1 : Tendsto (fun t : ℕ => a / t + c) atTop (𝓝 c) := by
+    simpa using (tendsto_const_div_atTop_nhds_zero_nat (𝕜 := ℝ) a).add_const c
+  have h2 : Tendsto (fun t : ℕ => b / t + Δ) atTop (𝓝 Δ) := by
+    simpa using (tendsto_const_div_atTop_nhds_zero_nat (𝕜 := ℝ) b).add_const Δ
+  have h3 : Tendsto (fun t : ℕ => (a / t + c) / (b / t + Δ)) atTop (𝓝 (c / Δ)) := by
+    have h := h1.div h2 (by simpa using hΔ.ne')
+    have hfun2 : ((fun t : ℕ => a / t + c) / (fun t : ℕ => b / t + Δ))
+        = fun t : ℕ => (a / t + c) / (b / t + Δ) := by
+      funext t
+      rfl
+    rw [hfun2] at h
+    simpa using h
+  have heq : ∀ᶠ t : ℕ in atTop,
+      (a / t + c) / (b / t + Δ) = (a + t * c) / (b + t * Δ) := by
+    filter_upwards [eventually_ne_atTop (0 : ℕ)] with t ht0
+    have ht : (t : ℝ) ≠ 0 := by exact_mod_cast ht0
+    have hbden : b + (t : ℝ) * Δ ≠ 0 := by
+      have hpos : 0 < b + (t : ℝ) * Δ := by
+        have ht0' : 0 ≤ (t : ℝ) := Nat.cast_nonneg t
+        nlinarith
+      exact hpos.ne'
+    field_simp
+  exact h3.congr' heq
+
 end LeanMarx
