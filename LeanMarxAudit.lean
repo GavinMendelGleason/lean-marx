@@ -19,3 +19,13 @@ import LeanMarx
 #print axioms LeanMarx.circuitStep_share
 #print axioms LeanMarx.gini_smul
 #print axioms LeanMarx.circuitStep_exceedance
+#print axioms LeanMarx.BalancedPath.x_eq
+#print axioms LeanMarx.ProductionTable.employment_eq
+#print axioms LeanMarx.ProductionTable.netOutput_eq
+#print axioms LeanMarx.ProductionTable.price_netOutput_eq
+#print axioms LeanMarx.wealthAt_isCircuit
+#print axioms LeanMarx.circuit_unique
+#print axioms LeanMarx.share_wealthAt_uniform
+#print axioms LeanMarx.gini_wealthAt_uniform
+#print axioms LeanMarx.sum_wealthAt_uniform
+#print axioms LeanMarx.tendsto_share_dominant

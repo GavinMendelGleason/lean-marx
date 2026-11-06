@@ -45,16 +45,23 @@ theorem sum_circuitStep (π : ℝ) (w : κ → ℝ) :
     ∑ i, circuitStep π w i = (1 + π) * ∑ i, w i := by
   simp [circuitStep, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
 
+/-- **Scaling preserves shares.** -/
+theorem share_smul (c : ℝ) (hc : c ≠ 0) (w : κ → ℝ) (hS : ∑ i, w i ≠ 0)
+    (i : κ) : share (c • w) i = share w i := by
+  unfold share
+  have hsum : ∑ j, (c • w) j = c * ∑ j, w j := by
+    simp [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+  rw [hsum]
+  simp only [Pi.smul_apply, smul_eq_mul]
+  have hden : c * ∑ i, w i ≠ 0 := mul_ne_zero hc hS
+  field_simp
+
 /-- **Uniform accumulation preserves shares.** After one turn of the circuit
 every investor holds the same share as before. -/
 theorem circuitStep_share (π : ℝ) (w : κ → ℝ) (h : 1 + π ≠ 0)
     (hS : ∑ i, w i ≠ 0) (i : κ) :
-    share (circuitStep π w) i = share w i := by
-  unfold share
-  rw [sum_circuitStep]
-  simp only [circuitStep, Pi.smul_apply, smul_eq_mul]
-  have hden : (1 + π) * ∑ i, w i ≠ 0 := mul_ne_zero h hS
-  field_simp
+    share (circuitStep π w) i = share w i :=
+  share_smul (1 + π) h w hS i
 
 /-- **Uniform scaling preserves the Gini coefficient** (indeed every
 scale-free inequality measure). -/

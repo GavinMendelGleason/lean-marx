@@ -3,6 +3,7 @@ import LeanMarx.Price
 import LeanMarx.Surplus
 import LeanMarx.Distribution
 import LeanMarx.Circuit
+import LeanMarx.Dynamics
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -32,12 +33,17 @@ Income shares are convex combinations of labour and capital shares with the
 wage and profit shares as weights; the Gini coefficient of income is bounded
 by the weighted average of the component Ginis.
 
-## 3. The circuit of capital (`LeanMarx.Circuit`)
+## 3. Time (`LeanMarx.Circuit`, `LeanMarx.Dynamics`)
 
-One turn at the uniform profit rate scales every investor's capital by the
-same factor. Shares, the Gini coefficient and the exceedance sets are
-invariant: the circuit preserves the share distribution and cannot create a
-Pareto law.
+Activities can grow along a balanced path `x (t+1) = (1+g) x t`, with
+employment and the money value of net output growing at `1+g` while labour
+values and cost prices stay put. Investor capital follows the circuit
+`w (t+1) i = (1+π i) w t i`, solved by `w t i = (1+π i)^t w0 i`.
+
+Equal rates preserve every share and the Gini coefficient at every date.
+Differential rates concentrate: the dominant rate's share tends to one, so
+the circuit cannot create a Pareto law — it either preserves the initial
+distribution or collapses it to a point mass.
 
 ## 4. Surplus value (`LeanMarx/Surplus`)
 

@@ -126,23 +126,42 @@ Formalised consequences:
 parameters, and the table enters only through employment and capital if one
 chooses to identify them (see the limits section).
 
-## The circuit of capital
+## Time
 
-`LeanMarx/Circuit.lean` adds the minimal one-step circuit: at a uniform
-profit rate every investor's capital is scaled by `1 + π`.
+`LeanMarx/Circuit.lean` has the one-turn circuit; `LeanMarx/Dynamics.lean`
+iterates it and adds a balanced-growth path for the table.
+
+**Balanced growth.** A `BalancedPath` satisfies `x (t+1) = (1+g) x t`, hence
+`x t = (1+g)^t x 0`. Employment, net output and the money value of net output
+all grow at `1+g`:
 
 | Result | Statement |
 |---|---|
-| `circuitStep_share` | every investor's share is invariant |
-| `gini_smul` | the Gini coefficient is invariant under uniform scaling |
-| `circuitStep_exceedance` | `{i | y < (1+π) w i} = {i | y/(1+π) < w i}` |
+| `BalancedPath.x_eq` | `x t = (1+g)^t • x 0` |
+| `employment_eq` | `employment (x t) = (1+g)^t * employment x 0` |
+| `netOutput_eq` | `netOutput (x t) = (1+g)^t • netOutput x 0` |
+| `price_netOutput_eq` | `p ⬝ᵥ netOutput (x t) = (1+g)^t * p ⬝ᵥ netOutput x 0` |
 
-So the circuit cannot generate a Pareto distribution: it preserves the share
-distribution and only relabels thresholds. A power law requires heterogeneity
-the circuit does not contain — differential profit rates, idiosyncratic
-multiplicative shocks with a reflecting barrier or reset, or a rich-get-richer
-mechanism. Independent multiplicative shocks alone (Gibrat) point towards a
-lognormal cross-section, not a Pareto one.
+Labour values and cost prices are stationary, so value accounting holds at
+every date.
+
+**Capital circuit.** With a per-investor profit rate,
+`w (t+1) i = (1+π i) w t i`, solved uniquely by `w t i = (1+π i)^t w0 i`:
+
+| Result | Statement |
+|---|---|
+| `circuit_unique` | the circuit law with a given initial wealth has one solution |
+| `share_wealthAt_uniform` | equal rates preserve every share at every date |
+| `gini_wealthAt_uniform` | equal rates preserve the Gini coefficient |
+| `sum_wealthAt_uniform` | total capital grows at `1+π` |
+| `tendsto_share_dominant` | if one rate strictly dominates, its share tends to 1 |
+
+So the circuit with equal rates is share-preserving at every date; with
+differential rates it concentrates wealth into a point mass, which is also not
+a power law. A non-degenerate Pareto distribution therefore needs what the
+circuit does not contain — stochastic shocks with a reflecting barrier or
+reset, or a rich-get-richer mechanism. Independent multiplicative shocks alone
+(Gibrat) point towards a lognormal cross-section.
 
 ## Surplus value
 
@@ -166,6 +185,7 @@ LeanMarx/Price.lean          dual cost prices, correspondence, no-surplus
 LeanMarx/Surplus.lean        value of labour power, surplus value
 LeanMarx/Distribution.lean   mixed agents, income shares, Gini bound
 LeanMarx/Circuit.lean        one-turn circuit, share and Gini invariance
+LeanMarx/Dynamics.lean       balanced growth, iterated circuit, concentration
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -187,5 +207,7 @@ lakefile.toml                Mathlib pinned by revision
 - The population is finite, so the income distribution is an empirical
   vector; no distributional law (power law, lognormal, etc.) is derived or
   assumed.
-- There is no dynamics beyond the one-step circuit: no saving, entry,
-  differential returns, or stochastic shocks, and no limit theorem.
+- Time is deterministic and discrete: balanced growth and a multiplicative
+  circuit, with no stochastic shocks, saving behaviour, entry, or endogenous
+  profit rates. The only limit theorem is the concentration of shares under a
+  dominant rate.
