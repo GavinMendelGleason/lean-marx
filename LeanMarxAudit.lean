@@ -55,3 +55,12 @@ import LeanMarx
 #print axioms LeanMarx.exitStep_of_bankrupt
 #print axioms LeanMarx.exitStep_pos_rate
 #print axioms LeanMarx.tendsto_share_selected
+#print axioms LeanMarx.Startup.survives_iff
+#print axioms LeanMarx.Startup.gain_of_survives
+#print axioms LeanMarx.Startup.loss_of_bankrupt
+#print axioms LeanMarx.wealthAfterStartup_of_survives
+#print axioms LeanMarx.wealthAfterStartup_of_bankrupt
+#print axioms LeanMarx.expectedStartupWealth_gain_iff
+#print axioms LeanMarx.entry_startup_bankrupt
+#print axioms LeanMarx.entry_startup_survives
+#print axioms LeanMarx.sum_entryCapital

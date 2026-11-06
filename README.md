@@ -257,6 +257,29 @@ power law needs **entry** of new producers and stochastic growth on top of
 exit; deterministic selection and growth still drive the distribution to a
 point mass.
 
+## Startups
+
+`LeanMarx/Startups.lean` lets investors found new producers. An investor
+commits `c = θ M` of wealth to a startup with expected rate `r`; survival is
+again `M' > M`:
+
+| Result | Statement |
+|---|---|
+| `Startup.survives_iff` | a startup survives exactly when `0 < r` |
+| `Startup.gain_of_survives` | success changes value by `+ c r` |
+| `Startup.loss_of_bankrupt` | failure loses the committed capital `c` |
+| `wealthAfterStartup_of_survives` | `M' = M + c r` |
+| `wealthAfterStartup_of_bankrupt` | `M' = M - c` |
+| `expectedStartupWealth_eq` | expected wealth is `M + c (p r - (1 - p))` |
+| `expectedStartupWealth_gain_iff` | positive expected gain exactly when `1 < p (1 + r)` |
+| `entry_startup_bankrupt` | a nonpositive-rate startup exits on entry |
+| `entry_startup_survives` | a positive-rate startup enters and grows |
+| `sum_entryCapital` | capital after entry is old capital plus startup capital |
+
+Entry, exit and growth are now all present. A stationary power law still
+requires a stochastic distribution of startup outcomes: the deterministic
+model either freezes shares or concentrates them.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -283,6 +306,7 @@ LeanMarx/Dynamics.lean       balanced growth, iterated circuit, concentration
 LeanMarx/Investment.lean     investment, surplus allocation, preferential attachment
 LeanMarx/Expectations.lean   investment by expected profit rates
 LeanMarx/Selection.lean      producers, bankruptcy, selection
+LeanMarx/Startups.lean       startup funding, entry, expected payoff
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -313,5 +337,7 @@ lakefile.toml                Mathlib pinned by revision
   neutral; heterogeneous expectations change shares but no distribution of
   expectations is derived.
 - Producers are single-output columns with exogenous profit rates. Bankruptcy
-  is a one-period rule (`M' ≤ M`); there is no entry of new producers and no
-  stochastic growth, so no stationary firm-size distribution is derived.
+  is a one-period rule (`M' ≤ M`), and startups enter with a committed
+  fraction of an investor's wealth. There is no stochastic distribution of
+  startup outcomes or growth, so no stationary firm-size distribution is
+  derived.

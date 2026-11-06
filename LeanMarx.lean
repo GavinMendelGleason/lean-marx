@@ -7,6 +7,7 @@ import LeanMarx.Dynamics
 import LeanMarx.Investment
 import LeanMarx.Expectations
 import LeanMarx.Selection
+import LeanMarx.Startups
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -74,7 +75,16 @@ zero, and a strictly dominant producer takes the whole share. Exit is the
 missing ingredient for firm-dynamics power laws, but deterministic selection
 alone still concentrates.
 
-## 7. Surplus value (`LeanMarx/Surplus`)
+## 7. Startups (`LeanMarx/Startups`)
+
+Investors found new producers with a fraction of their wealth. A startup is
+subject to the same rule, `M' > M`: it returns `+c r` on success, loses the
+committed capital `c` on failure, and is worth founding exactly when the
+expected gross return satisfies `1 < p (1 + r)`. Entry adjoins a new producer
+index set, and the same exit rule applies to old producers and startups
+together.
+
+## 8. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
