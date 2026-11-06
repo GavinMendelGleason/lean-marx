@@ -2,6 +2,7 @@ import LeanMarx.Basic
 import LeanMarx.Price
 import LeanMarx.Surplus
 import LeanMarx.Distribution
+import LeanMarx.Circuit
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -31,7 +32,14 @@ Income shares are convex combinations of labour and capital shares with the
 wage and profit shares as weights; the Gini coefficient of income is bounded
 by the weighted average of the component Ginis.
 
-## 3. Surplus value (`LeanMarx.Surplus`)
+## 3. The circuit of capital (`LeanMarx.Circuit`)
+
+One turn at the uniform profit rate scales every investor's capital by the
+same factor. Shares, the Gini coefficient and the exceedance sets are
+invariant: the circuit preserves the share distribution and cannot create a
+Pareto law.
+
+## 4. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

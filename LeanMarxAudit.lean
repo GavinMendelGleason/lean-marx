@@ -16,3 +16,6 @@ import LeanMarx
 #print axioms LeanMarx.Population.incomeShare_of_pure_worker
 #print axioms LeanMarx.Population.wageShareOfIncome_nonneg
 #print axioms LeanMarx.gini_mixture_le
+#print axioms LeanMarx.circuitStep_share
+#print axioms LeanMarx.gini_smul
+#print axioms LeanMarx.circuitStep_exceedance
