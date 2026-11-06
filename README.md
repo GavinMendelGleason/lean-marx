@@ -310,6 +310,44 @@ ingredient the deterministic selection models lacked. A stationary power law
 still needs the full stochastic process — entry, the law of motion at every
 date, and a stationary distribution — which is not derived here.
 
+## Stationary firm sizes and the wealth distribution
+
+`LeanMarx/FirmSize.lean` builds the finite chain the previous sections were
+missing. States are `{0, …, N}`: `0` is the dead/entry pool; a firm of size
+`k` grows to `k+1` with probability `g k` or dies to `0` with `1 - g k`; the
+pool enters at size `1` with probability `e`. At the top, `g N = 0`.
+
+With the size-dependent rule
+
+```
+g k = ((k+1)/(k+2))^α,
+```
+
+the stationary distribution is explicit:
+
+```
+π 0 = 1 / (1 + Σ_{k=1}^N e (2/(k+1))^α),
+π k  = e (2/(k+1))^α / (1 + Σ_{k=1}^N e (2/(k+1))^α).
+```
+
+| Result | Statement |
+|---|---|
+| `telescope` | the entry/death balance telescopes |
+| `mass_eq` | the stationary mass is `e (2/(k+1))^α` |
+| `stationaryMass_pos` | the masses form a probability vector |
+| `sum_stationaryMass` | they sum to one |
+| `stationary_balance_zero` | inflow to the pool equals outflow |
+| `stationary_balance_succ` | inflow to each size equals outflow |
+| `mass_ratio` | `π(k+1)/πk = ((k+1)/(k+2))^α` |
+| `ratio_tendsto_one` | that ratio tends to `1` |
+
+So the stationary firm-size distribution — and with one firm per investor, the
+stationary wealth distribution — is a **truncated power law**: `π k ∝
+(k+1)^{-α}`. The mass ratio tending to one is the signature of a power-law
+tail; a constant growth probability would instead give a constant ratio
+`γ < 1` and geometric decay. The exponent is controlled by how strongly the
+growth probability rises with size: larger `α` means a heavier tail.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -338,6 +376,7 @@ LeanMarx/Expectations.lean   investment by expected profit rates
 LeanMarx/Selection.lean      producers, bankruptcy, selection
 LeanMarx/Startups.lean       startup funding, entry, expected payoff
 LeanMarx/Death.lean          Gaussian death probability around the average
+LeanMarx/FirmSize.lean       finite growth/death/entry chain, stationary power law
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -370,6 +409,6 @@ lakefile.toml                Mathlib pinned by revision
 - Producers are single-output columns with exogenous profit rates. Bankruptcy
   is a one-period rule (`M' ≤ M`), startups enter with a committed fraction of
   an investor's wealth, and death is a Gaussian probability around the average
-  rate. There is no full stochastic process (entry law, transition kernel,
-  stationary distribution), so no stationary firm-size distribution is
-  derived.
+  rate. The stationary distribution is derived for a *finite* growth/death/
+  entry chain with a specific size-dependent rule; the infinite-population
+  limit and the full stochastic process are not derived.

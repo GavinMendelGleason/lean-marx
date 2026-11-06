@@ -9,6 +9,7 @@ import LeanMarx.Expectations
 import LeanMarx.Selection
 import LeanMarx.Startups
 import LeanMarx.Death
+import LeanMarx.FirmSize
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -96,7 +97,16 @@ is increasing in the rate. A stationary power law still needs a full
 stochastic process with entry; the module supplies the death rule and the
 one-period selection inequalities.
 
-## 9. Surplus value (`LeanMarx/Surplus`)
+## 9. Stationary firm sizes (`LeanMarx/FirmSize`)
+
+A finite growth/death/entry chain on sizes `{0, …, N}` has an explicit
+stationary distribution. With the size-dependent growth probability
+`g k = ((k+1)/(k+2))^α`, the stationary masses are `π k ∝ (k+1)^{-α}`: a
+power law. The mass ratio tends to one, unlike a geometric distribution whose
+ratio is a constant below one. With one firm per investor this is the
+stationary wealth distribution.
+
+## 10. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

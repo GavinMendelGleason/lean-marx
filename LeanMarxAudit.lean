@@ -73,3 +73,11 @@ import LeanMarx
 #print axioms LeanMarx.deathProb_above_avg
 #print axioms LeanMarx.sum_deviation_eq_zero
 #print axioms LeanMarx.expectedGrowth_le_of_le
+#print axioms LeanMarx.telescope
+#print axioms LeanMarx.mass_eq
+#print axioms LeanMarx.stationaryMass_pos
+#print axioms LeanMarx.sum_stationaryMass
+#print axioms LeanMarx.stationary_balance_zero
+#print axioms LeanMarx.stationary_balance_succ
+#print axioms LeanMarx.mass_ratio
+#print axioms LeanMarx.ratio_tendsto_one
