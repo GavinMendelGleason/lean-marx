@@ -1,131 +1,93 @@
 import LeanMarx.Basic
 
+set_option linter.unusedSectionVars false
+
 /-!
-# Sraffa price systems and the class split of net output
+# Dual cost prices of the production table
 
-Prices of production solve
+Prices are the dual of the table, not an added markup theory: a price vector
+`p` is a **cost price** at wage `w` when the price of net output covers the
+wage bill,
 
-`p = (1 + r) (p A + w l)`,
+`p (B − A) = w l`.
 
-where `r` is the uniform profit rate on capital advanced and `w` the money
-wage per unit of labour. Dotting against the gross output vector `x` turns
-this into the aggregate statement that the price of net output is split
-between the wage bill and profit, and identifies the profit with the profit
-rate times capital advanced (materials plus wages).
+There is no uniform profit rate and no Sraffa equation.  Consequences:
 
-The **wage share** of net output is then an explicit function of the profit
-rate and the price-value composition of capital, which is the aggregate
-prediction of how income is divided between the two classes.
+* prices exist exactly when labour values do — it is the same linear system,
+  scaled by `w`;
+* when the table determines labour values, every cost price is the wage rate
+  times the labour-value vector, so the price–value correspondence is a
+  theorem rather than a condition;
+* with cost prices and a wage equal to the price of the real wage bundle, the
+  value of labour power is exactly one: cost pricing leaves no surplus.  That
+  is why profit is carried by the distributional parameters of
+  `LeanMarx.Distribution` and not by prices.
 -/
 
 namespace LeanMarx
 
 open Matrix
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable {ι j : Type*} [Fintype ι] [Fintype j] [DecidableEq ι] [DecidableEq j]
 
-namespace Economy
+namespace ProductionTable
 
-variable (E : Economy ι)
-variable {p : ι → ℝ} {r w : ℝ}
+variable (T : ProductionTable ι j)
+variable {p : ι → ℝ} {w : ℝ}
 
-/-- A Sraffa price system: prices equal material costs plus the wage bill,
-marked up by the uniform profit rate on capital advanced. -/
-def IsPriceSystem (p : ι → ℝ) (r w : ℝ) : Prop :=
-  p = (1 + r) • (p ᵥ* E.A + w • E.l)
+/-- A cost price system: the price of net output equals the wage bill,
+`p (B − A) = w l`. -/
+def IsCostPrice (p : ι → ℝ) (w : ℝ) : Prop := p ᵥ* T.netOp = w • T.l
 
-/-- **Zero profit: prices are labour values.** With no profit markup the
-price system has the single solution `p = w v` at *any* composition of
-capital, so in that case prices always stand in a labour correspondence. -/
-theorem price_value_of_zero_profit (h : E.Productive) {p : ι → ℝ} {w : ℝ}
-    (hp : E.IsPriceSystem p 0 w) : p = w • E.value := by
-  rw [IsPriceSystem, add_zero, one_smul] at hp
-  have h1 : p ᵥ* E.leontief = w • E.l := by
-    rw [leontief, vecMul_sub, vecMul_one]
-    nth_rewrite 1 [hp]
-    rw [add_sub_cancel_left]
-  calc p = (p ᵥ* E.leontief) ᵥ* E.leontiefInv := by
-        rw [leontiefInv, vecMul_vecMul,
-          Matrix.mul_nonsing_inv (A := E.leontief) (show IsUnit E.leontief.det from h),
-          vecMul_one]
-    _ = (w • E.l) ᵥ* E.leontiefInv := by rw [h1]
-    _ = w • E.value := by rw [value, smul_vecMul]
+/-- Every labour value gives a cost price by scaling with the wage. -/
+theorem costPrice_of_labourValue {v : ι → ℝ} (hv : T.IsLabourValue v) (w : ℝ) :
+    T.IsCostPrice (w • v) w := by
+  unfold IsCostPrice
+  rw [smul_vecMul, hv]
 
-/-- Value of the material inputs consumed by gross output `x`. -/
-def capitalAdvanced (p : ι → ℝ) (x : ι → ℝ) : ℝ := p ⬝ᵥ (E.A *ᵥ x)
+/-- **Price–value correspondence.** When the table determines labour values,
+every cost price vector is the wage rate times the labour-value vector. -/
+theorem costPrice_eq_smul_labourValue (hU : T.ValuesUnique) {v : ι → ℝ}
+    (hp : T.IsCostPrice p w) (hv : T.IsLabourValue v) : p = w • v := by
+  obtain ⟨D, hD⟩ := hU
+  have h0 : (p - w • v) ᵥ* T.netOp = 0 := by
+    rw [sub_vecMul, hp, smul_vecMul, hv, sub_self]
+  have hEq : p - w • v = (p - w • v) ᵥ* (T.netOp * D) := by
+    rw [hD, vecMul_one]
+  rw [← vecMul_vecMul, h0, zero_vecMul] at hEq
+  exact sub_eq_zero.mp hEq
 
-/-- The wage bill for gross output `x`. -/
-def wageBill (w : ℝ) (x : ι → ℝ) : ℝ := w * E.employment x
+/-- **Prices and labour values stand or fall together.** A cost price exists
+exactly when a labour value does, since it is the same linear system scaled by
+the wage. -/
+theorem costPrice_exists_iff (hw : w ≠ 0) :
+    (∃ p : ι → ℝ, T.IsCostPrice p w) ↔ (∃ v : ι → ℝ, T.IsLabourValue v) := by
+  constructor
+  · rintro ⟨p, hp⟩
+    refine ⟨w⁻¹ • p, ?_⟩
+    unfold IsLabourValue
+    rw [smul_vecMul, hp, smul_smul, inv_mul_cancel₀ hw, one_smul]
+  · rintro ⟨v, hv⟩
+    exact ⟨w • v, T.costPrice_of_labourValue hv w⟩
 
-/-- Aggregate profit: net output at prices minus the wage bill. -/
-def profit (p : ι → ℝ) (w : ℝ) (x : ι → ℝ) : ℝ :=
-  p ⬝ᵥ E.netOutput x - E.wageBill w x
+/-- The value of net output at cost prices is exactly the wage bill: there is
+no price-theoretic residual out of which profit could be paid. -/
+theorem costPrice_netOutput (hp : T.IsCostPrice p w) (x : j → ℝ) :
+    p ⬝ᵥ T.netOutput x = w * T.employment x := by
+  rw [netOutput, employment, dotProduct_mulVec, hp, smul_dotProduct, smul_eq_mul]
 
-/-- **Net output at prices: profit plus the wage bill.** The price of net
-output is `r (C + Z) + Z` where `C` is material costs and `Z` the wage bill,
-because the wage is advanced as capital and marked up with the rest. -/
-theorem price_netOutput (h : E.IsPriceSystem p r w) (x : ι → ℝ) :
-    p ⬝ᵥ E.netOutput x
-      = r * E.capitalAdvanced p x + (1 + r) * E.wageBill w x := by
-  have hx : p ⬝ᵥ x = p ⬝ᵥ E.netOutput x + p ⬝ᵥ (E.A *ᵥ x) := by
-    rw [netOutput, ← dotProduct_add, ← Matrix.add_mulVec,
-      show E.leontief + E.A = 1 by rw [leontief, sub_add_cancel], Matrix.one_mulVec]
-  have hp : p ⬝ᵥ x = (1 + r) * (p ⬝ᵥ (E.A *ᵥ x) + w * E.employment x) := by
-    have := congrArg (fun v => v ⬝ᵥ x) h
-    simpa [IsPriceSystem, smul_dotProduct, add_dotProduct, dotProduct_smul,
-      ← dotProduct_mulVec, employment, mul_add, mul_assoc] using this
-  unfold capitalAdvanced wageBill
-  linarith
+/-- **Cost prices leave no surplus.** If the wage is the price of a real wage
+bundle `b`, then under cost prices the value of labour power is exactly one:
+workers receive the full value of what they produce. -/
+theorem costPrice_wage_value_of_labour_power (hU : T.ValuesUnique)
+    {v : ι → ℝ} (hp : T.IsCostPrice p w) (hv : T.IsLabourValue v) (hw : w ≠ 0)
+    {b : ι → ℝ} (hb : w = p ⬝ᵥ b) : v ⬝ᵥ b = 1 := by
+  have hpv := T.costPrice_eq_smul_labourValue hU hp hv
+  rw [hpv, smul_dotProduct] at hb
+  have hb' : w = w * (v ⬝ᵥ b) := by simpa [smul_eq_mul] using hb
+  have hcancel : w * 1 = w * (v ⬝ᵥ b) := by rw [mul_one]; exact hb'
+  exact (mul_left_cancel₀ hw hcancel).symm
 
-/-- **Profit is the profit rate on capital advanced.** Total profit equals
-`r` times the sum of material costs and the wage bill. -/
-theorem profit_eq (h : E.IsPriceSystem p r w) (x : ι → ℝ) :
-    E.profit p w x = r * (E.capitalAdvanced p x + E.wageBill w x) := by
-  unfold profit
-  have := E.price_netOutput h x
-  linarith
-
-/-- Profit is positive exactly when the profit rate is, provided capital
-advanced plus the wage bill is positive. -/
-theorem profit_pos_iff (h : E.IsPriceSystem p r w) (x : ι → ℝ)
-    (hK : 0 < E.capitalAdvanced p x + E.wageBill w x) :
-    0 < E.profit p w x ↔ 0 < r := by
-  rw [E.profit_eq h x, mul_pos_iff_of_pos_right hK]
-
-/-- Capital intensity in price terms: material costs per unit of wage bill. -/
-noncomputable def capitalIntensity (p : ι → ℝ) (w : ℝ) (x : ι → ℝ) : ℝ :=
-  E.capitalAdvanced p x / E.wageBill w x
-
-/-- The wage share of net output. -/
-noncomputable def wageShare (p : ι → ℝ) (w : ℝ) (x : ι → ℝ) : ℝ :=
-  E.wageBill w x / (E.wageBill w x + E.profit p w x)
-
-/-- **Class distribution.** Under a price system the wage share is
-`1 / (1 + r (1 + c))`, where `c` is the price-value composition of capital
-(material costs per unit of wage bill). Since `r` and `c` are the only
-determinants, the division of income between the classes is fixed by the
-profit rate and capital intensity. -/
-theorem wageShare_eq (h : E.IsPriceSystem p r w) (x : ι → ℝ)
-    (hZ : E.wageBill w x ≠ 0) :
-    E.wageShare p w x = 1 / (1 + r * (1 + E.capitalIntensity p w x)) := by
-  have hp := E.profit_eq h x
-  unfold wageShare
-  rw [hp]
-  rw [capitalIntensity]
-  field_simp
-  ring
-
-/-- The wage share falls strictly as the profit rate rises, for any positive
-capital intensity. This is the distributional prediction: a higher profit
-rate redistributes net output towards capital. -/
-theorem wageShare_strictAnti {r₁ r₂ c : ℝ} (hc : 0 < c) (hr : 0 ≤ r₁)
-    (hlt : r₁ < r₂) :
-    1 / (1 + r₂ * (1 + c)) < 1 / (1 + r₁ * (1 + c)) := by
-  have h₁ : 0 < 1 + r₁ * (1 + c) := by nlinarith
-  have h₂ : 0 < 1 + r₂ * (1 + c) := by nlinarith
-  rw [div_lt_div_iff₀ h₂ h₁]
-  nlinarith
-
-end Economy
+end ProductionTable
 
 end LeanMarx

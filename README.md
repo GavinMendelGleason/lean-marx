@@ -1,16 +1,17 @@
 # lean-marx
 
-Two classical questions of linear Marxian economics, formalised in Lean 4
-against Mathlib.
+A formal development in Lean 4 of two questions about an input–output
+production table:
 
-1. **What does it take for prices to correspond to labour values?**
-   `LeanMarx/Correspondence.lean`
+1. **When does the table determine labour values, and how do cost prices
+   relate to them?** `LeanMarx/Basic.lean`, `LeanMarx/Price.lean`
 2. **How is income distributed between workers and capitalists when everyone
    may be a mixture of the two?** `LeanMarx/Distribution.lean`
 
-The two meet in `LeanMarx/Fundamental.lean`: when the correspondence holds,
-money profit is proportional to surplus value and the money profit rate is the
-value rate of profit.
+Surplus value is derived from the table in `LeanMarx/Surplus.lean`.
+
+The primitive object is the **production table**, not a price system: there is
+no Sraffa equation and no assumed uniform profit rate.
 
 ## Building
 
@@ -35,61 +36,77 @@ An audit of the axioms used by the main results:
 nix develop -c lake env lean LeanMarxAudit.lean
 ```
 
-## Model
+## The production table
 
-A single-product (Leontief/Sraffa) economy over a finite sector set:
+Commodities `ι`, activities `j`, both finite:
 
-- `A i j` — units of commodity `j` consumed per unit of commodity `i`;
-- `l i` — direct labour per unit of gross output of `i`;
-- Leontief matrix `I − A`, productive when its determinant is a unit;
-- **labour values** `v = l (I − A)⁻¹`, so `v (I − A) = l`.
+- `A i k` — commodity `i` used per unit of activity `k` (the use matrix);
+- `B i k` — commodity `i` produced per unit of activity `k` (the make matrix;
+  several rows of a column may be nonzero, so joint production is allowed);
+- `l k` — labour input per unit of activity `k`, a row of the input side.
 
-**Prices of production** (`LeanMarx.Price`): a price vector `p`, profit rate
-`r` and money wage `w` satisfy `p = (1 + r) (p A + w l)`. Dotting against
-gross output `x` yields the aggregate identities used for distribution:
+The table fixes the **net-output operator** `N = B − A`. Activity `x` yields
+net output `N *ᵥ x` and employment `l ⬝ᵥ x`. The single-product model is the
+case `B = 1`.
 
-- profit `Π = p (I − A) x − w L = r (p A x + w L)`;
-- wage share `Z / (Z + Π) = 1 / (1 + r (1 + c))`, `c = p A x / (w L)`.
+## Feature 1 — labour values and cost prices
 
-## Feature 1 — a labour correspondence with prices
+**Labour values** are the vectors `v` with
 
-All results are in `LeanMarx.Correspondence` (with `r ≠ 0` and
-`I − (1+r)A` invertible where prices are solved for):
+```
+v (B − A) = l.
+```
+
+With joint production `N` is rectangular and need not be invertible, so this
+is a real condition, not a definition:
+
+| Predicate | Meaning | Consequence |
+|---|---|---|
+| `ValuesExist` | `N` has a left inverse (injective) | every labour input vector has a labour value |
+| `ValuesUnique` | `N` has a right inverse (surjective) | a labour value is unique when it exists |
+| `DeterminesValues` | both | `∃! v, IsLabourValue v` |
+
+Both together are invertibility of `N`. `LeanMarxDemo.lean` shows all three
+outcomes: the single-product table (`B = 1`) determines values; a genuine
+joint-production table with `N = [[1,1],[0,1]]` still does; and a table whose
+two processes have the same net output `(1,1)` does not — it admits two
+distinct value vectors for `l = (1,1)`, and none at all for `l = (1,0)`.
+
+**Cost prices** are the dual of the table, with no markup theory:
+
+```
+p (B − A) = w l.
+```
+
+The consequences are theorems:
 
 | Result | Statement |
 |---|---|
-| Zero profit | `r = 0` implies `p = w v`: prices are always proportional to values. |
-| **Criterion** | `p ∝ v  ↔  v ∝ l`. |
-| **Equal organic composition** | `v ∝ l  ↔  ∃ μ, l A = μ l`. |
+| `costPrice_exists_iff` | a cost price exists exactly when a labour value does (same linear system, scaled by `w`) |
+| `costPrice_eq_smul_labourValue` | when values are unique, every cost price is `w • v` |
+| `costPrice_netOutput` | the value of net output at cost prices is exactly the wage bill |
+| `costPrice_wage_value_of_labour_power` | with the wage equal to the price of the real wage bundle, `v·b = 1`: cost prices leave no surplus |
 
-So a labour correspondence exists exactly when the direct labour vector is a
-**left eigenvector of the input–output matrix**, i.e. when every sector has
-the same organic composition of capital. It is a property of the technology,
-not of the price level; at a zero profit rate it is automatic, and with
-profit it can fail. The multiplier is explicit: if `v = c l` then prices
-satisfy `p = ((1+r)w / (λ c)) v` with `λ = 1 − (1+r)(1 − 1/c)`.
+So the price–value correspondence is not a special condition to be searched
+for; it is automatic whenever the table determines labour values. The burden
+falls on the **rank condition**, which joint production can break — and no
+pricing convention can repair a table that does not determine values.
 
-`LeanMarxDemo.lean` works two two-sector examples:
-
-- `equalE` — symmetric matrix, `l = (1,1)`, equal organic composition; labour
-  values are `(4,4)`, the criterion produces the price vector `(20,20)` at
-  `r = 1/4`, `w = 1`, and `(20,20) = 5 · (4,4)`.
-- `unequalE` — upper-triangular matrix, `l = (1,0)`, labour values `(2,2)`;
-  the criterion proves that **no** price system with nonzero profit rate is
-  proportional to values.
+Because cost pricing exhausts net output in wages, profit is not a price
+residual. It is carried by the distributional parameters of feature 2, and
+surplus value is defined separately from the table.
 
 ## Feature 2 — income distribution with mixed agents
 
-`LeanMarx.Distribution` models a population in which agent `i` owns labour
+`LeanMarx/Distribution` models a population in which agent `i` owns labour
 `ℓ i` and capital `k i`. At wage rate `w` and profit rate `π`:
 
 ```
 y i = w · ℓ i + π · k i,        s i = y i / Σ y.
 ```
 
-The structural result is that every income share is a convex combination of
-the agent's labour share and capital share, with weights the economy-wide
-wage and profit shares:
+Every income share is a convex combination of the agent's labour share and
+capital share, with the economy-wide wage and profit shares as weights:
 
 ```
 s i = ω · (ℓ i / L) + (1 − ω) · (k i / K).
@@ -105,58 +122,49 @@ Formalised consequences:
 | Pure worker | `k i = 0` gives `s i = ω · (ℓ i / L)`; |
 | **Inequality bound** | `Gini(y) ≤ ω · Gini(ℓ) + (1 − ω) · Gini(k)`: mixing distributions can only offset differences. |
 
-In the price system of `LeanMarx.Price` the economy-wide wage share is
-`1 / (1 + r (1 + c))`, strictly decreasing in the profit rate `r`. That is the
-mixture weight `ω` when the population's capital is the capital advanced by
-the economy — materials `p A x` together with the wage fund `w L`, so that
-profit is `r (p A x + w L)` and total income is the price of net output (see
-the assumptions section). Then the distribution is predicted by the profit
-rate and capital intensity, and each agent's position is a mixture of the two
-class shares.
+`Distribution.lean` is independent of the price model: `w` and `π` are
+parameters, and the table enters only through employment and capital if one
+chooses to identify them (see the limits section).
 
-## Bridge — profit and surplus value
+## Surplus value
 
-`LeanMarx.Fundamental` takes a wage bundle `b` (goods per unit of labour) and
-the correspondence `p = k v`:
+With a real wage bundle `b` (goods per unit of labour), the value of labour
+power is `v·b` and employment `L` leaves
 
-- profit `Π = k · S`, where `S = L (1 − v·b)` is surplus value;
-- `S > 0 ↔ v·b < 1` (positive exploitation);
-- the money profit rate equals the value rate of profit
-  `r = S / (C + V)` with `C = v·A x`, `V = (v·b) L`.
+```
+S = L (1 − v·b).
+```
 
-Thus the price-based distribution of feature 2 is the value-based exploitation
-accounting of feature 1 exactly when the labour correspondence holds.
+`surplusValue_pos_iff`: `S > 0 ↔ v·b < 1`. Surplus value is positive exactly
+when the wage is below the value of labour power. It is a claim on the
+surplus product, not a price residual.
 
 ## Layout
 
 ```
-LeanMarx/Basic.lean          economy, Leontief inverse, labour values
-LeanMarx/Price.lean          Sraffa price system, profit, wage share
-LeanMarx/Correspondence.lean criterion p ∝ v ↔ v ∝ l, eigenvector form
+LeanMarx/Basic.lean          production table, net output, labour values,
+                             existence/uniqueness of values
+LeanMarx/Price.lean          dual cost prices, correspondence, no-surplus
+LeanMarx/Surplus.lean        value of labour power, surplus value
 LeanMarx/Distribution.lean   mixed agents, income shares, Gini bound
-LeanMarx/Fundamental.lean    profit = k · surplus value, value profit rate
 LeanMarx.lean                library root with overview
-LeanMarxDemo.lean            worked examples (positive and negative)
+LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
-flake.nix                    Lean 4.35.0 dev shell (flake.lock pins nixpkgs)
+flake.nix                    elan/Lean 4.35.0 dev shell (flake.lock pins nixpkgs)
 lakefile.toml                Mathlib pinned by revision
 ```
 
 ## Assumptions and limits
 
-- Single-product linear economy; no joint production, fixed capital or
-  technical choice, so labour values are unique when `I − A` is invertible.
-- The criterion takes prices as given solutions of the Sraffa system. The
-  existence of a positive price vector and profit rate for an arbitrary
-  nonnegative `A` is a Perron–Frobenius statement that Mathlib does not yet
-  provide; it is not needed for the equivalence, which is algebraic.
-- `Proportional` is defined with a nonzero scalar, not a positive one, so the
-  theorems hold even when prices are negative; adding `0 < c` recovers the
-  economic reading.
-- Prices are assumed to be paid from capital advanced (wages enter the
-  markup), as in Sraffa; this is what makes the wage share
-  `1 / (1 + r (1 + c))`.
-- The distribution model leaves `w` and `π` as parameters. Identifying the
-  population's aggregate capital with the economy's capital advanced
-  (`p A x + w L`) is a modelling step, not a theorem; under it the mixture
-  weight `ω` is the Sraffa wage share.
+- Single-period, linear, fixed-coefficient production; no joint production
+  restriction, but also no fixed capital, no technical choice, and no
+  substitution.
+- Labour values are taken to exist and be unique via the rank condition. No
+  Perron–Frobenius statement is used or claimed: there is no price-theoretic
+  existence theorem for a positive wage or profit rate.
+- Cost prices exhaust net output in wages, so a positive profit rate requires
+  an added distributional rule; the formalisation stops at the surplus-value
+  claim and leaves profit as a parameter.
+- The population is finite, so the income distribution is an empirical
+  vector; no distributional law (power law, lognormal, etc.) is derived or
+  assumed.

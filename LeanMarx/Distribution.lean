@@ -1,4 +1,4 @@
-import LeanMarx.Price
+import LeanMarx.Basic
 
 /-!
 # Income distribution with mixed worker–capitalist agents

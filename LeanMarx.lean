@@ -1,36 +1,39 @@
 import LeanMarx.Basic
 import LeanMarx.Price
-import LeanMarx.Correspondence
+import LeanMarx.Surplus
 import LeanMarx.Distribution
-import LeanMarx.Fundamental
 
 /-!
-# Marxian economics in Lean 4
+# Marxian economics in Lean 4: production tables, prices, distribution
 
-A formal development of two questions in linear Marxian economics.
+The economy is an input–output **production table**: a use matrix `A`, a make
+matrix `B` (joint production allowed), and labour `l` as an input row. The
+net-output operator is `N = B − A`.
 
-## 1. A labour correspondence with prices (`LeanMarx.Correspondence`)
+## 1. When is there a labour correspondence with prices?
+(`LeanMarx.Basic`, `LeanMarx.Price`)
 
-For a single-product economy with input–output matrix `A` and labour vector
-`l`, labour values are `v = l (I − A)⁻¹`. Prices of production solve the
-Sraffa system `p = (1+r)(p A + w l)`.
-
-* At zero profit rate, `p = w v`: prices are always proportional to values.
-* At a nonzero profit rate, `p ∝ v` **iff** `v ∝ l`, i.e. **iff** `l` is a
-  left eigenvector of `A` (equal organic composition of capital).
+* Labour values are the vectors `v` with `v N = l`.
+* With joint production `N` need not be invertible: `ValuesExist` (a left
+  inverse) gives a value for every labour input, `ValuesUnique` (a right
+  inverse) makes it unique. Both are `N` invertible.
+* Prices are the **dual cost prices** of the table: `p N = w l`. There is no
+  Sraffa markup. Prices exist exactly when labour values do, and when values
+  are unique every cost price is `w • v`: the correspondence is a theorem.
+* With cost prices and a wage equal to the price of the real wage bundle, the
+  value of labour power is one — cost prices leave no surplus.
 
 ## 2. Income distribution of mixed worker–capitalist agents
 (`LeanMarx.Distribution`)
 
-Each agent owns labour and capital, so every agent is a mixture of the two
-classes. Income shares are convex combinations of labour and capital shares,
-weighted by the economy-wide wage and profit shares. The wage share is
-`1 / (1 + r (1 + c))`, where `c` is capital intensity, and it falls with the
-profit rate. Mixing two distributions never raises the Gini coefficient above
-the weighted average of the components'.
+Each agent owns labour and capital, so is a mixture of the two classes.
+Income shares are convex combinations of labour and capital shares with the
+wage and profit shares as weights; the Gini coefficient of income is bounded
+by the weighted average of the component Ginis.
 
-## Bridge (`LeanMarx.Fundamental`)
+## 3. Surplus value (`LeanMarx.Surplus`)
 
-Under the correspondence, profit is `k` times surplus value and the money
-profit rate equals the value rate of profit `S / (C + V)`.
+`S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
+is positive exactly when the value of labour power is below one. Profit is a
+distributional claim on `S`, not a price residual.
 -/

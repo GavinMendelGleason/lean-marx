@@ -3,150 +3,175 @@ import LeanMarx
 set_option linter.unusedSimpArgs false
 
 /-!
-# Worked examples
+# Worked production tables
 
-Two two-sector economies exercise the labour-correspondence criterion of
-`LeanMarx.Correspondence`.
-
-* `equalComposition` has equal organic composition: its direct labour vector
-  is a left eigenvector of the input matrix, so a price vector proportional
-  to labour values exists (and the reverse direction of the criterion
-  produces one).
-* `unequalComposition` does not, so **no** price system with a nonzero
-  profit rate can be proportional to labour values.
+* `singleT` — the classical single-product table (`B = 1`): values exist
+  uniquely and are `(4,4)`; cost prices are `w · (4,4)`.
+* `jointOkT` — genuine joint production with an invertible net-output
+  operator: values are still unique.
+* `jointT` — joint production with a rank-one net-output operator: the table
+  does **not** determine values.  Two distinct value vectors exist for one
+  labour input, and none exists for another.
 -/
 
 namespace LeanMarx
 
 open Matrix
+open ProductionTable
 
-/-! ## Equal organic composition -/
+/-! ## Single-product table (the old model as the case `B = 1`) -/
 
-/-- Symmetric input matrix with equal row sums. -/
-noncomputable def equalA : Matrix (Fin 2) (Fin 2) ℝ := !![1/2, 1/4; 1/4, 1/2]
+noncomputable def singleA : Matrix (Fin 2) (Fin 2) ℝ := !![1/2, 1/4; 1/4, 1/2]
 
-/-- Two sectors, one hour per unit of output in each. -/
-noncomputable def equalE : Economy (Fin 2) := { A := equalA, l := ![1, 1] }
+/-- Two sectors, one hour per unit of output, make matrix the identity. -/
+noncomputable def singleT : ProductionTable (Fin 2) (Fin 2) :=
+  { A := singleA, B := 1, l := ![1, 1] }
 
-theorem equalE_productive : equalE.Productive := by
-  rw [Economy.Productive, Economy.leontief, isUnit_iff_ne_zero, Matrix.det_fin_two]
-  simp [equalE, equalA]
+theorem singleT_netOp : singleT.netOp = 1 - singleA := by
+  ext i k
+  simp [singleT, netOp]
+
+theorem singleT_det : singleT.netOp.det = 3 / 16 := by
+  rw [singleT_netOp, Matrix.det_fin_two]
+  simp [singleA]
   norm_num
 
-/-- The direct labour vector is a left eigenvector with eigenvalue `3/4`, so
-all sectors have the same organic composition of capital. -/
-theorem equalE_leftEigen : equalE.l ᵥ* equalE.A = (3 / 4 : ℝ) • equalE.l := by
-  ext i
-  fin_cases i <;>
-    simp [equalE, equalA, Matrix.vecMul, dotProduct, Fin.sum_univ_two] <;>
+/-- The inverse of `1 − A`. -/
+noncomputable def singleInv : Matrix (Fin 2) (Fin 2) ℝ := !![8 / 3, 4 / 3; 4 / 3, 8 / 3]
+
+theorem singleInv_left : singleInv * singleT.netOp = 1 := by
+  ext i k
+  fin_cases i <;> fin_cases k <;>
+    simp [singleInv, singleT, netOp, singleA, Matrix.mul_apply, Fin.sum_univ_two] <;>
     norm_num
 
-/-- Labour values are proportional to direct labour. -/
-theorem equalE_value_proportional :
-    Proportional equalE.value equalE.l :=
-  (equalE.value_proportional_labour_iff_leftEigen equalE_productive).mpr
-    ⟨3 / 4, equalE_leftEigen⟩
-
-/-- Prices `(20, 20)` solve the Sraffa system at profit rate `1/4` and wage
-`1`; the price matrix is invertible there. -/
-theorem equalE_priceSystem :
-    equalE.IsPriceSystem ![20, 20] (1 / 4) 1 := by
-  ext i
-  fin_cases i <;>
-    simp [Economy.IsPriceSystem, equalE, equalA, Matrix.vecMul, dotProduct,
-      Matrix.add_apply, Fin.sum_univ_two] <;>
+theorem singleInv_right : singleT.netOp * singleInv = 1 := by
+  ext i k
+  fin_cases i <;> fin_cases k <;>
+    simp [singleInv, singleT, netOp, singleA, Matrix.mul_apply, Fin.sum_univ_two] <;>
     norm_num
 
-theorem equalE_priceMatrix_invertible :
-    IsUnit (equalE.priceMatrix (1 / 4)).det := by
-  rw [isUnit_iff_ne_zero, Economy.priceMatrix, Matrix.det_fin_two]
-  simp [equalE, equalA]
-  norm_num
+/-- The table determines labour values: `1 − A` is invertible. -/
+theorem singleT_determines : singleT.DeterminesValues :=
+  ⟨⟨singleInv, singleInv_left⟩, ⟨singleInv, singleInv_right⟩⟩
 
-theorem equalE_value_ne_zero : equalE.value ≠ 0 := by
-  intro h0
-  have hl : equalE.l = 0 := by
-    rw [← equalE.value_leontief equalE_productive, h0, zero_vecMul]
-  have : (1 : ℝ) = 0 := by simpa [equalE] using congrFun hl 0
-  norm_num at this
-
-/-- Labour values are `(4, 4)`: four hours embodied in each commodity. -/
-theorem equalE_value_eq : equalE.value = ![4, 4] := by
-  have hinj := Matrix.vecMul_injective_of_isUnit
-    ((Matrix.isUnit_iff_isUnit_det equalE.leontief).mpr equalE_productive)
-  apply hinj
-  change equalE.value ᵥ* equalE.leontief = (![4, 4] : Fin 2 → ℝ) ᵥ* equalE.leontief
-  rw [equalE.value_leontief equalE_productive]
+/-- Labour values are `(4,4)`: four hours embodied in each commodity. -/
+theorem singleT_labourValue : singleT.labourValue singleInv = ![4, 4] := by
+  unfold ProductionTable.labourValue
   ext i
   fin_cases i <;>
-    simp [equalE, equalA, Economy.leontief, vecMul, dotProduct, Fin.sum_univ_two] <;>
+    simp [singleT, singleInv, Matrix.vecMul, dotProduct, Fin.sum_univ_two] <;>
     norm_num
 
-/-- The price vector is exactly five times the value vector. -/
-theorem equalE_price_eq_five_value : (![20, 20] : Fin 2 → ℝ) = 5 • equalE.value := by
-  rw [equalE_value_eq]
+theorem singleT_value : singleT.IsLabourValue ![4, 4] := by
+  have h := singleT.labourValue_isLabourValue singleInv_left
+  rwa [singleT_labourValue] at h
+
+/-- **Cost prices are proportional to labour values.** Every cost price is
+the wage rate times `(4,4)`. -/
+theorem singleT_correspondence {p : Fin 2 → ℝ} {w : ℝ}
+    (hp : singleT.IsCostPrice p w) : p = w • ![4, 4] :=
+  singleT.costPrice_eq_smul_labourValue singleT_determines.2 hp singleT_value
+
+theorem singleT_costPrice_concretely : singleT.IsCostPrice ![4, 4] 1 := by
+  simpa using singleT.costPrice_of_labourValue singleT_value 1
+
+/-! ## Joint production, invertible net output -/
+
+noncomputable def jointOkA : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, 1]
+noncomputable def jointOkB : Matrix (Fin 2) (Fin 2) ℝ := !![2, 1; 0, 2]
+
+/-- Process 0 makes two units of commodity 0 and one of commodity 1;
+process 1 makes two units of commodity 1. -/
+noncomputable def jointOkT : ProductionTable (Fin 2) (Fin 2) :=
+  { A := jointOkA, B := jointOkB, l := ![1, 1] }
+
+theorem jointOkT_netOp : jointOkT.netOp = !![1, 1; 0, 1] := by
+  ext i k
+  fin_cases i <;> fin_cases k <;> simp [jointOkT, netOp, jointOkA, jointOkB]
+  all_goals norm_num
+
+noncomputable def jointOkInv : Matrix (Fin 2) (Fin 2) ℝ := !![1, -1; 0, 1]
+
+theorem jointOkInv_left : jointOkInv * jointOkT.netOp = 1 := by
+  ext i k
+  fin_cases i <;> fin_cases k <;>
+    simp [jointOkInv, jointOkT_netOp, Matrix.mul_apply, Fin.sum_univ_two]
+
+theorem jointOkInv_right : jointOkT.netOp * jointOkInv = 1 := by
+  ext i k
+  fin_cases i <;> fin_cases k <;>
+    simp [jointOkInv, jointOkT_netOp, Matrix.mul_apply, Fin.sum_univ_two]
+
+/-- Joint production is not degenerate: this table determines values. -/
+theorem jointOkT_determines : jointOkT.DeterminesValues :=
+  ⟨⟨jointOkInv, jointOkInv_left⟩, ⟨jointOkInv, jointOkInv_right⟩⟩
+
+theorem jointOkT_value : jointOkT.IsLabourValue ![1, 0] := by
+  unfold ProductionTable.IsLabourValue
+  rw [jointOkT_netOp]
   ext i
-  fin_cases i <;> norm_num
+  fin_cases i <;> simp [jointOkT, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
-/-- **A labour correspondence exists.** Prices are proportional to labour
-values at the actual profit rate and wage. -/
-theorem equalE_price_proportional_value :
-    Proportional ![20, 20] equalE.value :=
-  (equalE.price_proportional_value_iff (equalE.value_leontief equalE_productive)
-    equalE_value_ne_zero equalE_priceMatrix_invertible equalE_priceSystem
-    (by norm_num) (by norm_num) (by norm_num)).mpr equalE_value_proportional
+/-- ... and the value is unique. -/
+theorem jointOkT_unique_value :
+    ∃! v : Fin 2 → ℝ, jointOkT.IsLabourValue v :=
+  jointOkT.existsUnique_labourValue jointOkT_determines
 
-/-! ## Unequal organic composition -/
+/-! ## Joint production, rank-one net output: values fail -/
 
-/-- Upper-triangular input matrix: sector 1 uses sector 1's output only. -/
-noncomputable def unequalA : Matrix (Fin 2) (Fin 2) ℝ := !![1/2, 1/2; 0, 1/2]
+noncomputable def jointA : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, 1]
+noncomputable def jointB : Matrix (Fin 2) (Fin 2) ℝ := !![2, 1; 1, 2]
 
-/-- Only sector 0 is labour-using. -/
-noncomputable def unequalE : Economy (Fin 2) := { A := unequalA, l := ![1, 0] }
+/-- Both processes have the same net output `(1,1)` per unit of activity. -/
+noncomputable def jointT : ProductionTable (Fin 2) (Fin 2) :=
+  { A := jointA, B := jointB, l := ![1, 1] }
 
-theorem unequalE_productive : unequalE.Productive := by
-  rw [Economy.Productive, Economy.leontief, isUnit_iff_ne_zero, Matrix.det_fin_two]
-  simp [unequalE, unequalA]
-  norm_num
+theorem jointT_netOp : jointT.netOp = !![1, 1; 1, 1] := by
+  ext i k
+  fin_cases i <;> fin_cases k <;> simp [jointT, netOp, jointA, jointB]
+  all_goals norm_num
 
-/-- The direct labour vector is **not** a left eigenvector: the first
-coordinate forces eigenvalue `1/2`, which the second coordinate contradicts. -/
-theorem unequalE_not_leftEigen :
-    ¬ ∃ μ : ℝ, unequalE.l ᵥ* unequalE.A = μ • unequalE.l := by
-  rintro ⟨μ, hμ⟩
-  have h1 : (unequalE.l ᵥ* unequalE.A) 1 = (μ • unequalE.l) 1 := by rw [hμ]
-  simp [unequalE, unequalA, Matrix.vecMul, dotProduct, Fin.sum_univ_two] at h1
+/-- Two distinct labour-value vectors for the same table. -/
+theorem jointT_values_not_unique :
+    ∃ v₁ v₂ : Fin 2 → ℝ, v₁ ≠ v₂ ∧
+      jointT.IsLabourValue v₁ ∧ jointT.IsLabourValue v₂ := by
+  refine ⟨![1, 0], ![0, 1], ?_, ?_, ?_⟩
+  · intro h
+    have := congrFun h 0
+    simp at this
+  · unfold ProductionTable.IsLabourValue
+    rw [jointT_netOp]
+    ext i
+    fin_cases i <;> simp [jointT, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
+  · unfold ProductionTable.IsLabourValue
+    rw [jointT_netOp]
+    ext i
+    fin_cases i <;> simp [jointT, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
-/-- Labour values are `(2, 2)` here, while direct labour is `(1, 0)`: the two
-are not proportional. -/
-theorem unequalE_value_eq : unequalE.value = ![2, 2] := by
-  have hinj := Matrix.vecMul_injective_of_isUnit
-    ((Matrix.isUnit_iff_isUnit_det unequalE.leontief).mpr unequalE_productive)
-  apply hinj
-  change unequalE.value ᵥ* unequalE.leontief = (![2, 2] : Fin 2 → ℝ) ᵥ* unequalE.leontief
-  rw [unequalE.value_leontief unequalE_productive]
-  ext i
-  fin_cases i <;>
-    simp [unequalE, unequalA, Economy.leontief, vecMul, dotProduct, Fin.sum_univ_two] <;>
-    norm_num
+/-- For labour input `(1,0)` there is **no** labour value at all. -/
+theorem jointT_no_value_for :
+    ¬ ∃ v : Fin 2 → ℝ, v ᵥ* jointT.netOp = ![1, 0] := by
+  rintro ⟨v, hv⟩
+  have h0 := congrFun hv 0
+  have h1 := congrFun hv 1
+  simp [jointT_netOp, Matrix.vecMul, dotProduct, Fin.sum_univ_two] at h0 h1
+  linarith
 
-/-- Hence no price system with nonzero profit rate is proportional to labour
-values, whatever the wage. -/
-theorem unequalE_no_price_proportional_value
-    (p : Fin 2 → ℝ) (r w : ℝ) (hp : unequalE.IsPriceSystem p r w)
-    (hM : IsUnit (unequalE.priceMatrix r).det)
-    (hr : r ≠ 0) (hw : w ≠ 0) (hr1 : 1 + r ≠ 0) :
-    ¬ Proportional p unequalE.value := by
-  intro hpc
-  have hvl := unequalE.value_leontief unequalE_productive
-  have hvne : unequalE.value ≠ 0 := by
-    intro h0
-    have hl : unequalE.l = 0 := by
-      rw [← hvl, h0, zero_vecMul]
-    have : (1 : ℝ) = 0 := by simpa [unequalE] using congrFun hl 0
-    norm_num at this
-  exact unequalE_not_leftEigen
-    ((unequalE.value_proportional_labour_iff_leftEigen unequalE_productive).mp
-      ((unequalE.price_proportional_value_iff hvl hvne hM hp hr hw hr1).mp hpc))
+/-- `B − A` has no left inverse, so not every labour input has a value. -/
+theorem jointT_valuesExist_false : ¬ jointT.ValuesExist := by
+  rintro ⟨C, hC⟩
+  have hcol : (C * jointT.netOp) 0 0 = (C * jointT.netOp) 0 1 := by
+    simp [jointT_netOp, Matrix.mul_apply, Fin.sum_univ_two]
+  rw [hC] at hcol
+  simp at hcol
+
+/-- `B − A` has no right inverse, so values are not unique. -/
+theorem jointT_valuesUnique_false : ¬ jointT.ValuesUnique := by
+  rintro ⟨D, hD⟩
+  have hrow : (jointT.netOp * D) 0 0 = (jointT.netOp * D) 1 0 := by
+    simp [jointT_netOp, Matrix.mul_apply, Fin.sum_univ_two]
+  rw [hD] at hrow
+  simp at hrow
 
 end LeanMarx
