@@ -22,10 +22,12 @@ nix develop -c lake exe cache get   # prebuilt Mathlib oleans
 nix develop -c lake build
 ```
 
-`nix develop` supplies Lean 4.35.0 (`lean`, `lake`) from nixpkgs, pinned by
-`flake.lock`. The first `lake exe cache get` fetches Mathlib at the revision
-in `lakefile.toml` and unpacks its cache; without it the first build compiles
-Mathlib from source.
+`nix develop` supplies `elan` and the build tools from nixpkgs, pinned by
+`flake.lock`; `lean-toolchain` selects the official Lean 4.35.0 release, which
+elan provisions. The official release matters: oleans are tied to the compiler
+build, and nixpkgs' own Lean build cannot load the Mathlib cache. The first
+`lake exe cache get` fetches Mathlib at the revision in `lakefile.toml` and
+unpacks its cache; without it the first build compiles Mathlib from source.
 
 An audit of the axioms used by the main results:
 

@@ -12,11 +12,15 @@
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
           name = "lean-marx";
-          packages = with pkgs; [ lean4 git cacert curl ];
+          # `elan` provides the `lean`/`lake` shims and resolves the toolchain
+          # named by `lean-toolchain`.  Using the official release (rather than
+          # nixpkgs' own Lean build) matters: oleans are tied to the compiler
+          # build, so a differently linked Lean cannot load the Mathlib cache.
+          packages = with pkgs; [ elan git cacert curl gmp zlib ];
           shellHook = ''
-            echo "lean-marx — Lean $(lean --version | cut -d' ' -f4) from nixpkgs"
-            echo "  lake build        build the library and examples"
-            echo "  (the first build fetches Mathlib at the revision pinned in lakefile.toml)"
+            echo "lean-marx — $(lean --version 2>/dev/null | head -1)"
+            echo "  lake exe cache get   fetch prebuilt Mathlib oleans"
+            echo "  lake build           build the library and examples"
           '';
         };
       });
