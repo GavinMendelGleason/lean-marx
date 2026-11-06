@@ -6,6 +6,7 @@ import LeanMarx.Circuit
 import LeanMarx.Dynamics
 import LeanMarx.Investment
 import LeanMarx.Expectations
+import LeanMarx.Selection
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -64,7 +65,16 @@ capital is multiplied by the same rate-weighted average, so shares and the
 Gini coefficient are invariant. Differences in wealth shares come from
 heterogeneous expectations: above-average expected returns gain share.
 
-## 6. Surplus value (`LeanMarx/Surplus`)
+## 6. Producers and bankruptcy (`LeanMarx/Selection`)
+
+A producer is a column making one indexed commodity; several producers may
+make the same commodity. A producer survives only if `M' > M`; otherwise it
+goes bankrupt (`M' ≤ M`, i.e. `r ≤ 0`). Failing producers' capital decays to
+zero, and a strictly dominant producer takes the whole share. Exit is the
+missing ingredient for firm-dynamics power laws, but deterministic selection
+alone still concentrates.
+
+## 7. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

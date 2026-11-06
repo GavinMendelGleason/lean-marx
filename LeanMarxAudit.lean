@@ -48,3 +48,10 @@ import LeanMarx
 #print axioms LeanMarx.share_increases_iff_above_average
 #print axioms LeanMarx.expectedWealthOf_iterate
 #print axioms LeanMarx.tendsto_share_expected_dominant
+#print axioms LeanMarx.ProducerTable.toTable_netOp_apply
+#print axioms LeanMarx.survives_iff
+#print axioms LeanMarx.bankrupt_iff
+#print axioms LeanMarx.tendsto_capitalPath_zero
+#print axioms LeanMarx.exitStep_of_bankrupt
+#print axioms LeanMarx.exitStep_pos_rate
+#print axioms LeanMarx.tendsto_share_selected

@@ -229,6 +229,34 @@ outcome is either a frozen distribution (equal rates) or a point mass
 persistent distribution of expected returns across investors, or a stochastic
 barrier/entry mechanism; neither is derived here.
 
+## Producers and bankruptcy
+
+`LeanMarx/Selection.lean` makes the producers explicit. A `ProducerTable` has
+a column per producer, each making one indexed commodity (`output : φ → ι`);
+several producers may make the same commodity, so an industry can have more
+than one technique. It embeds into the general table via `toTable`, whose net
+output for producer `p` is one unit of its commodity less its inputs
+(`toTable_netOp_apply`).
+
+A producer's capital reproduces as `M' = M (1 + r)` and it **survives only if
+`M' > M`**; if `M' ≤ M` it goes bankrupt:
+
+| Result | Statement |
+|---|---|
+| `survives_iff` | `M < M'` exactly when `r > 0` |
+| `bankrupt_iff` | `M' ≤ M` exactly when `r ≤ 0` |
+| `tendsto_capitalPath_zero` | with `-1 < r < 0`, capital decays geometrically to zero |
+| `exitStep_of_bankrupt` | a nonpositive-rate producer exits at zero capital |
+| `exitStep_of_survivor` | a positive-rate producer grows |
+| `exitStep_pos_rate` | after exit, any producer with capital has a positive rate |
+| `tendsto_share_selected` | a strictly dominant producer takes the whole capital share |
+
+Exit is the ingredient the earlier models lacked. Multiplicative growth plus
+bankruptcy is the classical setup for a Pareto firm-size distribution, but the
+power law needs **entry** of new producers and stochastic growth on top of
+exit; deterministic selection and growth still drive the distribution to a
+point mass.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -254,6 +282,7 @@ LeanMarx/Circuit.lean        one-turn circuit, share and Gini invariance
 LeanMarx/Dynamics.lean       balanced growth, iterated circuit, concentration
 LeanMarx/Investment.lean     investment, surplus allocation, preferential attachment
 LeanMarx/Expectations.lean   investment by expected profit rates
+LeanMarx/Selection.lean      producers, bankruptcy, selection
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
@@ -283,3 +312,6 @@ lakefile.toml                Mathlib pinned by revision
 - Expectations are taken as given. Common expectations are distributionally
   neutral; heterogeneous expectations change shares but no distribution of
   expectations is derived.
+- Producers are single-output columns with exogenous profit rates. Bankruptcy
+  is a one-period rule (`M' ≤ M`); there is no entry of new producers and no
+  stochastic growth, so no stationary firm-size distribution is derived.
