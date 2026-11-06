@@ -215,14 +215,19 @@ totalInvested M r a = (Σ i, M i) * rateShare r a.
 | `expectedWealth_share` | common expectations leave every wealth share unchanged |
 | `expectedWealth_gini` | common expectations leave the Gini coefficient unchanged |
 | `share_increases_iff_above_average` | an investor gains share exactly when their expected return exceeds the average |
+| `expectedWealthOf_iterate` | iterating fixed expected returns is the circuit path `wealthAt ρ M0` |
+| `tendsto_share_expected_dominant` | a strictly dominant expected return drives its share to `1` |
 
 So investing by expected profit rates is not by itself a distributional
 mechanism: with common expectations every investor earns the same
 rate-weighted average, so shares and inequality are frozen. What moves the
 distribution is **heterogeneous** expectations — an investor whose expected
 return is above the economy-wide average gains share, one below it loses.
-A Pareto law would require a specific persistent distribution of expected
-returns across investors, not merely rate-chasing.
+With fixed expectations the iteration is the circuit of `Dynamics`, so the
+outcome is either a frozen distribution (equal rates) or a point mass
+(`tendsto_share_expected_dominant`). A Pareto law would require a specific
+persistent distribution of expected returns across investors, or a stochastic
+barrier/entry mechanism; neither is derived here.
 
 ## Surplus value
 

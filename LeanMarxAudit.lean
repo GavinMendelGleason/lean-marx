@@ -46,3 +46,5 @@ import LeanMarx
 #print axioms LeanMarx.expectedWealth_share
 #print axioms LeanMarx.expectedWealth_gini
 #print axioms LeanMarx.share_increases_iff_above_average
+#print axioms LeanMarx.expectedWealthOf_iterate
+#print axioms LeanMarx.tendsto_share_expected_dominant

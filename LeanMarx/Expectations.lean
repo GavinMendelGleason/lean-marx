@@ -29,7 +29,8 @@ expected return exceeds the economy-wide average gains share
 
 namespace LeanMarx
 
-open Finset Matrix
+open Filter Finset Matrix
+open scoped Topology
 
 variable {κ σ : Type*} [Fintype κ] [Fintype σ] [DecidableEq κ] [DecidableEq σ]
 
@@ -127,5 +128,28 @@ theorem share_increases_iff_above_average [Nonempty κ] {M ρ : κ → ℝ}
     Finset.sum_pos (fun k _ => hM k) Finset.univ_nonempty
   rw [div_lt_div_iff₀ hW hY, div_lt_iff₀ hW]
   constructor <;> intro h <;> nlinarith [hM i]
+
+/-- **Iterated investment by expected rates is the capital circuit.** With
+fixed expected returns `ρ`, capital obeys `M i (t+1) = M i t * (1 + ρ i)`,
+whose path is `wealthAt ρ M0`. -/
+theorem expectedWealthOf_iterate (M0 ρ : κ → ℝ) (t : ℕ) :
+    (fun i => M0 i * (1 + ρ i) ^ t) = wealthAt ρ M0 t := by
+  ext i
+  simp [wealthAt, mul_comm]
+
+/-- **A dominant expected return concentrates.** With fixed expected returns
+and one strictly dominant rate, that investor's share tends to one: the
+long-run distribution is a point mass, not a power law. -/
+theorem tendsto_share_expected_dominant (ρ M0 : κ → ℝ) (j : κ)
+    (h0 : ∀ i, 0 ≤ 1 + ρ i) (hj : ∀ i, i ≠ j → 1 + ρ i < 1 + ρ j)
+    (hjpos : 0 < 1 + ρ j) (hM0 : 0 < M0 j) :
+    Tendsto (fun t => share (fun i => M0 i * (1 + ρ i) ^ t) j) atTop (𝓝 1) := by
+  have h := tendsto_share_dominant ρ M0 j h0 hj hjpos hM0
+  have hiter : (fun t : ℕ => share (fun i => M0 i * (1 + ρ i) ^ t) j)
+      = fun t : ℕ => share (wealthAt ρ M0 t) j := by
+    funext t
+    rw [expectedWealthOf_iterate]
+  rw [hiter]
+  exact h
 
 end LeanMarx
