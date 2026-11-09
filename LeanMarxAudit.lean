@@ -81,3 +81,9 @@ import LeanMarx
 #print axioms LeanMarx.stationary_balance_succ
 #print axioms LeanMarx.mass_ratio
 #print axioms LeanMarx.ratio_tendsto_one
+#print axioms LeanMarx.stationaryMass_eq
+#print axioms LeanMarx.zeroMass_strictAnti
+#print axioms LeanMarx.activeShare_eq
+#print axioms LeanMarx.activeShare_strictMono
+#print axioms LeanMarx.throughput_strictMono
+#print axioms LeanMarx.conditionalMass_eq

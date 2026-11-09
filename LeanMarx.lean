@@ -10,6 +10,7 @@ import LeanMarx.Selection
 import LeanMarx.Startups
 import LeanMarx.Death
 import LeanMarx.FirmSize
+import LeanMarx.WealthPump
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -106,7 +107,16 @@ power law. The mass ratio tends to one, unlike a geometric distribution whose
 ratio is a constant below one. With one firm per investor this is the
 stationary wealth distribution.
 
-## 10. Surplus value (`LeanMarx/Surplus`)
+## 10. The wealth pump and entry (`LeanMarx/WealthPump`)
+
+The stationary masses factor as `π k = e A k / (1 + e Σ A)`. Entry is the
+extensive margin: a fall in entry raises the zero-wealth mass, shrinks the
+active sector and lowers the gross flow up the ladder, while leaving the
+conditional distribution among active firms and the Pareto exponent
+unchanged. The pump's intensity is set by the size dependence of growth and
+death, not by entry.
+
+## 11. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

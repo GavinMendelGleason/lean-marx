@@ -348,6 +348,30 @@ tail; a constant growth probability would instead give a constant ratio
 `γ < 1` and geometric decay. The exponent is controlled by how strongly the
 growth probability rises with size: larger `α` means a heavier tail.
 
+## The wealth pump and entry
+
+`LeanMarx/WealthPump.lean` factors the stationary masses:
+
+```
+π k = e A k / (1 + e Σ A),     π 0 = 1 / (1 + e Σ A),     A k = (2/(k+1))^α.
+```
+
+| Result | Statement |
+|---|---|
+| `stationaryMass_eq` | the factored form |
+| `zeroMass_strictAnti` | lower entry raises the zero-wealth mass |
+| `activeShare_strictMono` | higher entry raises the active sector |
+| `throughput_strictMono` | higher entry raises the gross inflow up the ladder |
+| `conditionalMass_eq` | the distribution among active firms is entry-free |
+| `mass_ratio` (FirmSize) | the tail ratio is entry-free |
+
+Entry is the extensive margin. It changes how many agents are active and how
+much flow passes up the ladder; it does not change the shape of the
+distribution among active firms, the top share among owners, or the Pareto
+exponent. Measured inequality across the whole population rises when entry
+falls, because the zero-wealth mass grows. The intensity of the pump itself is
+set by the size dependence of growth and death, not by entry.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -377,6 +401,7 @@ LeanMarx/Selection.lean      producers, bankruptcy, selection
 LeanMarx/Startups.lean       startup funding, entry, expected payoff
 LeanMarx/Death.lean          Gaussian death probability around the average
 LeanMarx/FirmSize.lean       finite growth/death/entry chain, stationary power law
+LeanMarx/WealthPump.lean     entry decomposition, active sector, throughput
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
