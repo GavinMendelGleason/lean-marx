@@ -19,6 +19,7 @@ import LeanMarx.ProfitRate
 import LeanMarx.ProfitDistribution
 import LeanMarx.Banking
 import LeanMarx.Comparative
+import LeanMarx.ValueDetermination
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -243,7 +244,29 @@ Each layer is a conservative extension with a switch-off reduction to the
 layer below.  The intended stack is production → investment → debt → banking →
 central banking; within a layer, comparative statics replace the reduction.
 
-## 19. Surplus value (`LeanMarx/Surplus`)
+## 19. Labour values versus commodity substitution (`LeanMarx/ValueDetermination`)
+
+Under cost pricing and unique labour values, prices are proportional to labour
+values: `p = w • v`, hence `p i / p j = v i / v j`.  A commodity substitution
+changes the input matrix and therefore changes `v` and `p` together; the
+correspondence is preserved for the new table.  Substitution is the basis of
+the labour values, not an alternative determinant.
+
+| Result | Statement |
+|---|---|
+| `price_ratio_eq_value_ratio` | price ratios are labour-value ratios |
+| `price_eq_value_of_unit_wage` | with `w = 1`, price equals labour value |
+| `price_eq_labour_add_gap` | `p = w • v + gap` |
+| `priceGap_eq_zero_iff` | zero gap iff prices are proportional to values |
+| `marketPrice_gap_eq` | at model prices the gap is the rent wedge |
+| `marketPrice_gap_zero_of_no_monopoly` | no monopoly ⇒ gap zero |
+
+What breaks the determination is distribution and market structure — a rent,
+a markup, joint production, a non-unique value vector — not substitution as
+such.  Demand substitution affects quantities in the cost-price model; with
+markups it feeds into the gap, not into the labour values.
+
+## 20. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

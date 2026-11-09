@@ -439,6 +439,50 @@ households' portfolio choice, default as a discontinuity, and the open
 economy.  The next layer should add a lending rule with capital adequacy and
 collateral, then a default event with losses and bank failure.
 
+## Labour values versus commodity substitution
+
+Under cost pricing and unique labour values, prices are exactly proportional
+to labour values:
+
+```
+p = w • v,      p i / p j = v i / v j.
+```
+
+| Result | Statement |
+|---|---|
+| `price_ratio_eq_value_ratio` | the price ratio is the labour-value ratio |
+| `price_eq_value_of_unit_wage` | with `w = 1`, price equals labour value |
+| `price_eq_labour_add_gap` | `p = w • v + gap` |
+| `priceGap_eq_zero_iff` | zero gap iff prices are proportional to values |
+| `marketPrice_gap_eq` | at model prices the gap is the rent wedge |
+| `marketPrice_gap_zero_of_no_monopoly` | no monopoly ⇒ gap zero |
+
+This is the strongest statement the model supports: the labour-value vector is
+a sufficient statistic for relative prices.  A **commodity substitution** acts
+on the input matrix, so it changes `v` and `p` together; the correspondence is
+preserved for the new table.  Substitution is therefore the *basis* of the
+labour values, not an alternative determinant of price.
+
+What breaks the determination is distribution and market structure.  The
+decomposition is
+
+```
+p = w • v + gap,        gap = p − w • v.
+```
+
+At the model's prices the gap is exactly the rent wedge.  A monopoly, a
+markup, a rent, joint production or a non-unique value vector makes the gap
+nonzero or the value vector unavailable.  Demand substitution is a separate
+channel: in the cost-price model demand determines quantities, not prices;
+with markups, demand elasticity feeds into the markup and hence into the gap,
+not into the labour values.
+
+The cost-price result is a zero-profit benchmark.  With a uniform profit rate,
+prices are not proportional to labour values in general — that is the
+transformation problem, and `LeanMarx/Correspondence` and
+`LeanMarx/RentTheory` locate where the correspondence holds and where the
+deviation enters.
+
 ## Social metabolism: labour, price and rent
 
 `LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour

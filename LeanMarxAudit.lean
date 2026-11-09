@@ -156,3 +156,8 @@ import LeanMarx
 #print axioms LeanMarx.creditCapacity_mono_leverage
 #print axioms LeanMarx.FinancedModel.iterate_projection
 #print axioms LeanMarx.FinancedModel.capital_mono_credit
+#print axioms LeanMarx.ProductionTable.price_ratio_eq_value_ratio
+#print axioms LeanMarx.ProductionTable.price_eq_value_of_unit_wage
+#print axioms LeanMarx.priceGap_eq_zero_iff
+#print axioms LeanMarx.marketPrice_gap_eq
+#print axioms LeanMarx.marketPrice_gap_zero_of_no_monopoly
