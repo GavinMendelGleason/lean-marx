@@ -143,3 +143,6 @@ import LeanMarx
 #print axioms LeanMarx.survivorMean_ge_overallMean
 #print axioms LeanMarx.survivors_filter_eq
 #print axioms LeanMarx.survivor_tail_prob
+#print axioms LeanMarx.mass_ratio_eq_one_sub_deathHazard
+#print axioms LeanMarx.deathHazard_antitone
+#print axioms LeanMarx.deathHazard_tendsto_zero

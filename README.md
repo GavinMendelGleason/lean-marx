@@ -340,6 +340,18 @@ the stationary distribution is explicit:
 | `stationary_balance_succ` | inflow to each size equals outflow |
 | `mass_ratio` | `π(k+1)/πk = ((k+1)/(k+2))^α` |
 | `ratio_tendsto_one` | that ratio tends to `1` |
+| `mass_ratio_eq_one_sub_deathHazard` | `π(k+1)/πk = 1 − h k`, the death hazard |
+| `deathHazard_antitone` | the death hazard falls with size |
+| `deathHazard_tendsto_zero` | the death hazard vanishes in the tail |
+
+The mass ratio is one minus the death hazard. So a power-law tail — the mass
+ratio tending to one — is exactly a death hazard that vanishes with size. A
+constant growth probability, and therefore a constant hazard, gives a constant
+ratio and a geometric tail. This is the formal counterpart of the observation
+that a lognormal body plus a Pareto tail suggests different hazard regimes:
+the tail needs a size-declining hazard, while the body is compatible with a
+constant hazard. The cross-section alone does not identify the hazard, though;
+transition data are needed.
 
 So the stationary firm-size distribution — and with one firm per investor, the
 stationary wealth distribution — is a **truncated power law**: `π k ∝

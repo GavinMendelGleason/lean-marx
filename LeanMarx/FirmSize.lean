@@ -265,4 +265,48 @@ theorem ratio_tendsto_one (α : ℝ) :
   rw [hfun] at hcomp
   simpa [Real.one_rpow] using hcomp
 
+/-! ## Hazard by size
+
+The stationary mass ratio is the growth probability, so it is one minus the
+death hazard.  A Pareto-like tail — mass ratio tending to one — is therefore
+the same statement as a death hazard that vanishes with size.  A constant
+hazard instead gives a geometric tail.  This is the formal content of
+"lognormal body plus Pareto tail = different hazard by size": the tail
+requires the hazard to fall with size, while a constant-hazard body does not.
+-/
+
+/-- Death hazard for the size-dependent rule `g k = ((k+1)/(k+2))^α`,
+untruncated. -/
+noncomputable def deathHazard (α : ℝ) (k : ℕ) : ℝ :=
+  1 - (((k : ℝ) + 1) / ((k : ℝ) + 2)) ^ α
+
+/-- **The death hazard falls with size.** -/
+theorem deathHazard_antitone {α : ℝ} (hα : 0 < α) : Antitone (deathHazard α) := by
+  intro k l hkl
+  unfold deathHazard
+  have hbase : ((k : ℝ) + 1) / ((k : ℝ) + 2) ≤ ((l : ℝ) + 1) / ((l : ℝ) + 2) := by
+    rw [div_le_div_iff₀ (by positivity) (by positivity)]
+    have hkl' : (k : ℝ) ≤ (l : ℝ) := Nat.cast_le.mpr hkl
+    nlinarith
+  have hpow : (((k : ℝ) + 1) / ((k : ℝ) + 2)) ^ α
+      ≤ (((l : ℝ) + 1) / ((l : ℝ) + 2)) ^ α :=
+    Real.rpow_le_rpow (by positivity) hbase hα.le
+  linarith
+
+/-- **The death hazard vanishes in the tail.** -/
+theorem deathHazard_tendsto_zero (α : ℝ) :
+    Tendsto (deathHazard α) atTop (𝓝 0) := by
+  have h := (tendsto_const_nhds (x := (1 : ℝ))).sub (ratio_tendsto_one α)
+  have h0 : (1 : ℝ) - 1 = 0 := by norm_num
+  rw [h0] at h
+  exact h
+
+/-- **Mass ratio = one minus death hazard.** -/
+theorem mass_ratio_eq_one_sub_deathHazard (α e : ℝ) (N : ℕ) (hα : 0 < α)
+    (he : 0 < e) {k : ℕ} (hk : 1 ≤ k) (hkN : k + 1 ≤ N) :
+    mass α e N (k + 1) / mass α e N k = 1 - deathHazard α k := by
+  rw [mass_ratio α e N hα he hk hkN]
+  unfold deathHazard
+  ring
+
 end LeanMarx
