@@ -16,6 +16,7 @@ import LeanMarx.Demand
 import LeanMarx.RentTheory
 import LeanMarx.Shares
 import LeanMarx.ProfitRate
+import LeanMarx.ProfitDistribution
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -188,7 +189,26 @@ recovered only from prices satisfying `p B = (1+r)(p A + w l)`; the model's
 labour-value markup prices generally do not, so the recovered number is an
 average, and the transformation problem reappears in the denominator.
 
-## 16. Surplus value (`LeanMarx/Surplus`)
+## 16. The profit-rate cross-section (`LeanMarx/ProfitDistribution`)
+
+A rate is observed only if the firm survives `M' > M`, i.e. only if `0 < r`.
+The observed cross-section is the underlying rate distribution truncated below
+at zero, with a point mass at failure.
+
+| Result | Statement |
+|---|---|
+| `failureMass_add_survivorMass` | failure mass plus survival mass is one |
+| `survivorMean_ge_overallMean` | selection raises the mean |
+| `survivors_filter_eq` | for `t > 0`, survivors above `t` are all firms above `t` |
+| `survivor_tail_prob` | the conditional tail is the unconditional tail count over the survival mass |
+
+So selection truncates the lower tail and renormalises; it does not create or
+destroy the upper tail. The expected shape is a mass at failure, a right-skewed
+positive part, and an upper tail inherited from the rate process. The
+firm-size chain gives a Pareto-like size tail when growth is size-dependent
+(`LeanMarx/FirmSize`); the rate tail is inherited from the rate process.
+
+## 17. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

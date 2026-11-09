@@ -610,6 +610,46 @@ model's labour-value markup prices generally do not satisfy it, so the
 recovered number is an average over heterogeneous rates, and the
 transformation problem reappears in the denominator.
 
+### The profit-rate cross-section
+
+A rate is observed only if the firm survives `M' > M`, i.e. only if `0 < r`.
+So the observed cross-section is the underlying rate distribution **truncated
+at zero**, with a point mass at failure:
+
+| Result | Statement |
+|---|---|
+| `failureMass_add_survivorMass` | failure mass plus survival mass is one |
+| `survivorMean_ge_overallMean` | selection raises the mean |
+| `survivors_filter_eq` | for `t > 0`, survivors above `t` are all firms above `t` |
+| `survivor_tail_prob` | conditional tail = unconditional tail count / survival mass |
+
+The expected shape is therefore:
+
+- a **point mass at failure** (`r ≤ 0`): the negative tail is never observed,
+  only exit;
+- a **right-skewed positive part**: survivors are the `r > 0` truncation;
+- an **upper tail inherited** from the rate process: truncation below zero
+  rescales the tail but does not change it.
+
+The body is approximately log-normal or Laplace if profit rates are
+multiplicative i.i.d. shocks (Gibrat); the firm-size chain gives a Pareto-like
+*size* tail when growth is size-dependent (`LeanMarx/FirmSize`). The profit-rate
+tail is a separate object and inherits whatever upper tail the rate process
+has: thin-tailed shocks give a truncated thin-tailed rate distribution, heavy
+shocks give a heavy right tail.
+
+Entry adds a cohort effect. Entrants must cover stocks and labour before the
+first sale, so the first-cycle rate is centred near zero or negative and the
+entrant failure mass is high. Survivors are selected; the cross-section mixes
+young firms (high failure mass, high variance) with old firms (the upper tail).
+The capital-allocation rule matters: allocating to entrants with higher
+expected rates selects on expected profitability and lowers the entrant failure
+mass, but the realised survivor distribution still has a right tail.
+
+The aggregate profit rate is the capital-weighted mean of firm rates; a heavy
+upper tail lifts the mean above the median. This is why the aggregate can be
+positive while a large fraction of firms fail.
+
 ### Income split versus consumption composition
 
 The split above is the split of **income** (wages versus rent). The split of
