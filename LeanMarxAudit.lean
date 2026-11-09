@@ -167,3 +167,6 @@ import LeanMarx
 #print axioms LeanMarx.priceValueRatio_eq_of_proportional
 #print axioms LeanMarx.priceValueRatio_eq_one_add_rentRate
 #print axioms LeanMarx.priceValueRatio_ne_of_rentRate_ne
+#print axioms LeanMarx.ProductionTable.isLabourValue_independent_of_prices
+#print axioms LeanMarx.ProductionTable.existsUnique_labourValue_independent
+#print axioms LeanMarx.ProductionTable.recover_labourInput

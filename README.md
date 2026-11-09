@@ -509,6 +509,41 @@ transformation problem, and `LeanMarx/Correspondence` and
 `LeanMarx/RentTheory` locate where the correspondence holds and where the
 deviation enters.
 
+## Labour content under dispersed profit rates
+
+Labour values are determined by the technique:
+
+```
+v (B − A) = l.
+```
+
+The profit-rate distribution does not enter this equation.  A dispersion of
+profit rates changes prices, not values.
+
+| Result | Statement |
+|---|---|
+| `isLabourValue_independent_of_prices` | the value predicate depends only on the table |
+| `existsUnique_labourValue_independent` | the unique value exists independently of prices |
+| `IsSectoralPrice` | a price system with a dispersed rate vector `r j` |
+| `recover_labourInput` | given prices, rates, inputs and wage, recover each activity's labour input |
+
+There are two different questions:
+
+- **Determination.** Values are fixed by the technique, independently of prices
+  and profit rates.  Dispersion affects the price–value gap, not the values.
+- **Identification.** Given prices, the input matrix, the wage and the
+  **dispersed** rate vector, the direct labour input of each activity is
+  recoverable, and the labour value follows from the table when it is unique.
+  From prices alone it is not recoverable: the map from `(A, l, r)` to `p` is
+  not injective, and the dispersion adds an unknown vector.
+
+If the dispersion reflects genuinely heterogeneous techniques, joint
+production, or fixed capital, the labour content may be non-unique or
+non-existent; then a technique-selection rule is needed.  In a dynamic model
+the dispersion can also drive investment, selection and technical change,
+which changes the technique — and hence future labour content — even though
+the static value equation is independent of it.
+
 ## Social metabolism: labour, price and rent
 
 `LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour

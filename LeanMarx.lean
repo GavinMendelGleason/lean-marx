@@ -20,6 +20,7 @@ import LeanMarx.ProfitDistribution
 import LeanMarx.Banking
 import LeanMarx.Comparative
 import LeanMarx.ValueDetermination
+import LeanMarx.LabourContent
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -266,7 +267,24 @@ a markup, joint production, a non-unique value vector — not substitution as
 such.  Demand substitution affects quantities in the cost-price model; with
 markups it feeds into the gap, not into the labour values.
 
-## 20. Surplus value (`LeanMarx/Surplus`)
+## 20. Labour content under dispersed profit rates (`LeanMarx/LabourContent`)
+
+Labour values are determined by the technique, `v (B − A) = l`; the
+profit-rate distribution does not enter.  A dispersed rate vector changes
+prices, not values.
+
+| Result | Statement |
+|---|---|
+| `isLabourValue_independent_of_prices` | the value predicate depends only on the table |
+| `existsUnique_labourValue_independent` | the unique value exists independently of prices |
+| `IsSectoralPrice` | a price system with a dispersed rate vector `r j` |
+| `recover_labourInput` | given prices, rates, inputs and wage, recover each activity's labour input |
+
+So determination is independent of dispersion; identification from prices
+requires the production coefficients and the rate vector, and is not possible
+from prices alone.
+
+## 21. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
