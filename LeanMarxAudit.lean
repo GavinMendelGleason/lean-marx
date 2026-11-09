@@ -119,3 +119,11 @@ import LeanMarx
 #print axioms LeanMarx.Population.aggregate_budget
 #print axioms LeanMarx.Population.pure_worker_wage_floor
 #print axioms LeanMarx.Population.cannot_reproduce_rationed
+#print axioms LeanMarx.rentRate_eq_price_gap
+#print axioms LeanMarx.rentRate_eq_of_rate
+#print axioms LeanMarx.monopolyProfit_le
+#print axioms LeanMarx.monopolyPrice_eq_cost_mul
+#print axioms LeanMarx.monopolyMarkup_pos
+#print axioms LeanMarx.monopolyMarkup_antitone_elastic
+#print axioms LeanMarx.monopolyMarkup_eq_inv_elasticity
+#print axioms LeanMarx.ProducerTable.marketPrice_determined

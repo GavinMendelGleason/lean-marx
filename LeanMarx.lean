@@ -13,6 +13,7 @@ import LeanMarx.FirmSize
 import LeanMarx.WealthPump
 import LeanMarx.SocialMetabolism
 import LeanMarx.Demand
+import LeanMarx.RentTheory
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -138,7 +139,16 @@ expenditure plus saving equals income, individually and in aggregate. For a
 pure worker reproduction requires `w ≥ (p·b)/labour`, the wage floor that
 puts pressure on the bottom.
 
-## 13. Surplus value (`LeanMarx/Surplus`)
+## 13. A theory of rent (`LeanMarx/RentTheory`)
+
+Rent is the price–labour distance: `p/(w·v) − 1`, and the gap recovers μ.
+For μ itself, monopoly pricing with linear demand gives
+`p* = (a + b c)/(2b)` and `μ = (a − b c)/(2 b c)`, equivalently
+`μ = 1/(ε − 1)` at the profit-maximising price. More elastic demand gives a
+smaller μ; competition (two or more producers) gives zero. So market power
+sets the potential μ and contestability decides whether it survives.
+
+## 14. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

@@ -509,6 +509,46 @@ The demand system is the standard Stone–Geary/LES form in reduced form; its
 properties (budget, floor, rationing, saving) are proved, while the
 utility-maximisation problem that generates it is not derived.
 
+## A theory of rent: what determines μ
+
+`LeanMarx/RentTheory.lean` makes rent measurable and gives μ a determination.
+
+**Measurement.** Rent is the normalized distance between price and integrated
+labour time:
+
+```
+rentRate p v w c = p c / (w · v c) − 1 = (p c − w · v c) / (w · v c).
+```
+
+`rentRate_eq_price_gap` states the second form, and `rentRate_eq_of_rate`
+says that if the price is `(1 + μ) w v`, the measured gap is exactly μ. So the
+price–labour distance *is* the rent rate; nothing unobservable is needed.
+
+**Determination.** A monopolist facing linear demand `q = a − b p` with unit
+cost `c = w · v` maximizes `(p − c)(a − b p)`:
+
+| Result | Statement |
+|---|---|
+| `monopolyProfit_le` | `p* = (a + b c)/(2b)` maximizes profit |
+| `monopolyPrice_eq_cost_mul` | `p* = (1 + μ) c` |
+| `monopolyMarkup_pos` | μ `> 0` when the market is profitable |
+| `monopolyMarkup_antitone_elastic` | more elastic demand (larger `b`) gives smaller μ |
+| `monopolyMarkup_eq_inv_elasticity` | `μ = 1/(ε − 1)` at the optimum |
+| `determinedMarkup` | the theory-determined μ: monopoly markup or zero |
+| `marketPrice_determined` | prices are the monopoly price under one producer, the labour value otherwise |
+
+So two forces determine μ:
+
+1. **Market power / demand.** μ falls with the elasticity of demand and with
+   the unit cost, and rises with the size of the market; the Lerner identity
+   `μ = 1/(ε − 1)` is the general form.
+2. **Contestability / entry.** A second producer removes the monopoly and the
+   rent (`rent_eq_zero_of_two_producers`). The observed μ is the monopoly
+   markup only where entry is blocked; otherwise it is competed to zero.
+
+The linear-demand model is a tractable instance of the general Lerner logic;
+a full theory would add entry costs, bargaining, and dynamics.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -541,6 +581,7 @@ LeanMarx/FirmSize.lean       finite growth/death/entry chain, stationary power l
 LeanMarx/WealthPump.lean     entry decomposition, active sector, throughput
 LeanMarx/SocialMetabolism.lean  labour values, price gaps, rent, supply/demand
 LeanMarx/Demand.lean         income, subsistence floors, Stone–Geary demand, saving
+LeanMarx/RentTheory.lean     rent measurement, monopoly pricing, determined μ
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
