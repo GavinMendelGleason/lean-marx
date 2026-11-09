@@ -17,6 +17,8 @@ import LeanMarx.RentTheory
 import LeanMarx.Shares
 import LeanMarx.ProfitRate
 import LeanMarx.ProfitDistribution
+import LeanMarx.Banking
+import LeanMarx.Comparative
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -208,7 +210,40 @@ positive part, and an upper tail inherited from the rate process. The
 firm-size chain gives a Pareto-like size tail when growth is size-dependent
 (`LeanMarx/FirmSize`); the rate tail is inherited from the rate process.
 
-## 17. Surplus value (`LeanMarx/Surplus`)
+## 17. Banking and credit (`LeanMarx/Banking`)
+
+A balance-sheet core: assets, liabilities, equity, credit creation, repayment,
+write-offs, firm funding and insolvency.
+
+| Result | Statement |
+|---|---|
+| `assets_eq_liabilities_add_equity` | the balance-sheet identity |
+| `equity_createLoan` | a loan creates a deposit and is equity-neutral |
+| `equity_repayLoan` | repayment is equity-neutral |
+| `equity_writeOff` | a write-off reduces equity by the loss |
+| `Firm.insolvent_iff` | insolvency is debt exceeding assets |
+| `investment_of_no_credit` | zero credit recovers retained-earnings investment |
+| `investment_le_retained_add_capacity` | investment is capped by retained earnings plus the credit limit |
+| `creditCapacity_mono_leverage` | higher leverage raises lending capacity |
+
+## 18. Comparative models (`LeanMarx/Comparative`)
+
+A refinement hierarchy: the real model `K' = K(1+π)` is extended by credit,
+`K' = K(1+π) + c`.
+
+| Result | Statement |
+|---|---|
+| `step_projection_of_no_credit` | with `c = 0`, the financed step projects onto the real step |
+| `credit_stepN` | zero credit is preserved along the trajectory |
+| `iterate_projection` | the whole financed trajectory projects onto the real one |
+| `credit_increases_capital` | nonnegative credit does not lower capital |
+| `capital_mono_credit` | higher credit gives higher capital |
+
+Each layer is a conservative extension with a switch-off reduction to the
+layer below.  The intended stack is production → investment → debt → banking →
+central banking; within a layer, comparative statics replace the reduction.
+
+## 19. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

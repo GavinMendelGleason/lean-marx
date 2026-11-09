@@ -392,6 +392,53 @@ exponent. Measured inequality across the whole population rises when entry
 falls, because the zero-wealth mass grows. The intensity of the pump itself is
 set by the size dependence of growth and death, not by entry.
 
+## Banking, debt and comparative models
+
+`LeanMarx/Banking.lean` adds the accounting core of a monetary production
+economy.
+
+| Result | Statement |
+|---|---|
+| `assets_eq_liabilities_add_equity` | the balance-sheet identity |
+| `equity_createLoan` | a loan of `L` creates a deposit of `L`; equity is unchanged |
+| `equity_repayLoan` | repayment destroys both sides; equity is unchanged |
+| `equity_writeOff` | a write-off reduces equity by the loss |
+| `Firm.insolvent_iff` | insolvency is debt exceeding assets |
+| `investment_of_no_credit` | zero credit recovers retained-earnings investment |
+| `investment_le_retained_add_capacity` | investment is capped by retained earnings plus the credit limit |
+| `creditCapacity_mono_leverage` | higher leverage raises lending capacity |
+
+Money is endogenous: deposits are created by lending and destroyed by
+repayment.  The credit limit and the leverage ratio are the comparative
+parameters for the financial sector.
+
+`LeanMarx/Comparative.lean` formalises the model stack.  The real model is
+`K' = K(1+π)`; the financed model adds credit, `K' = K(1+π) + c`.
+
+| Result | Statement |
+|---|---|
+| `step_projection_of_no_credit` | with `c = 0`, the financed step projects onto the real step |
+| `credit_stepN` | zero credit is preserved along the trajectory |
+| `iterate_projection` | the whole financed trajectory projects onto the real one |
+| `credit_increases_capital` | nonnegative credit does not lower capital |
+| `capital_mono_credit` | higher credit gives higher capital |
+
+So each layer is a **conservative extension** with a switch-off reduction to
+the layer below.  The intended stack is
+
+```
+production → investment → debt → banking → central banking
+```
+
+with two kinds of comparison at each step: *vertical* (the reduction theorem
+when the new feature is switched off) and *horizontal* (comparative statics
+within the layer: credit limit, leverage, interest rate, default).
+
+Not yet modelled: reserves and the central bank, deposit insurance,
+households' portfolio choice, default as a discontinuity, and the open
+economy.  The next layer should add a lending rule with capital adequacy and
+collateral, then a default event with losses and bank failure.
+
 ## Social metabolism: labour, price and rent
 
 `LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour

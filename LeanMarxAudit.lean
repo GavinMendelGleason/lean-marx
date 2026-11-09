@@ -146,3 +146,13 @@ import LeanMarx
 #print axioms LeanMarx.mass_ratio_eq_one_sub_deathHazard
 #print axioms LeanMarx.deathHazard_antitone
 #print axioms LeanMarx.deathHazard_tendsto_zero
+#print axioms LeanMarx.BalanceSheet.assets_eq_liabilities_add_equity
+#print axioms LeanMarx.BalanceSheet.equity_createLoan
+#print axioms LeanMarx.BalanceSheet.equity_repayLoan
+#print axioms LeanMarx.BalanceSheet.equity_writeOff
+#print axioms LeanMarx.Firm.insolvent_iff
+#print axioms LeanMarx.Funding.investment_of_no_credit
+#print axioms LeanMarx.Funding.investment_le_retained_add_capacity
+#print axioms LeanMarx.creditCapacity_mono_leverage
+#print axioms LeanMarx.FinancedModel.iterate_projection
+#print axioms LeanMarx.FinancedModel.capital_mono_credit
