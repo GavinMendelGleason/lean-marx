@@ -134,3 +134,8 @@ import LeanMarx
 #print axioms LeanMarx.ProducerTable.capitalShare_eq_valueRent
 #print axioms LeanMarx.ProducerTable.wageShare_antitone_valueRent
 #print axioms LeanMarx.valueRentOn_mono_set
+#print axioms LeanMarx.ProductionTable.totalRevenue_sub_totalInputCost
+#print axioms LeanMarx.ProductionTable.averageProfitRate_costPrice
+#print axioms LeanMarx.ProductionTable.averageProfitRate_eq_of_profitRatePrice
+#print axioms LeanMarx.ProducerTable.marketPrice_profit_eq_rent
+#print axioms LeanMarx.ProducerTable.averageProfitRate_marketPrice_eq_rent_div

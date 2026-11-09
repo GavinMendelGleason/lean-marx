@@ -579,6 +579,37 @@ So the number of monopolies matters only through the **value-weighted rent**
 many small ones. Adding a monopolised commodity with positive rent raises `V`,
 lowers the wage share, and raises the capital share.
 
+### Recovering the average profit rate
+
+The average profit rate is the price difference between total inputs and
+product sale, over total input cost:
+
+```
+averageProfitRate = (revenue − cost) / cost,
+cost = p · (A x) + w · (l · x),   revenue = p · (B x).
+```
+
+| Result | Statement |
+|---|---|
+| `totalRevenue_sub_totalInputCost` | profit = `p·netOutput − w·employment` |
+| `averageProfitRate_costPrice` | cost prices leave zero profit |
+| `averageProfitRate_eq_of_profitRatePrice` | a Sraffa price with uniform `r`, `p B = (1+r)(p A + w l)`, returns exactly `r` |
+| `marketPrice_profit_eq_rent` | at the model's prices, the profit numerator is the rent |
+| `averageProfitRate_marketPrice_eq_rent_div` | the rate is rent over total input cost |
+
+Three different numbers must not be conflated:
+
+- the **markup** `μ` (a wedge on labour value);
+- the **rent share of net output** `R/(wL+R)`;
+- the **profit rate on total capital advanced** `R/(p A x + w l x)`.
+
+They coincide only in special cases: with no produced inputs, `A = 0`, the
+markup and the profit rate coincide; in general they do not. A *uniform*
+profit rate is recovered from prices satisfying the Sraffa equation; the
+model's labour-value markup prices generally do not satisfy it, so the
+recovered number is an average over heterogeneous rates, and the
+transformation problem reappears in the denominator.
+
 ### Income split versus consumption composition
 
 The split above is the split of **income** (wages versus rent). The split of

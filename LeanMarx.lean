@@ -15,6 +15,7 @@ import LeanMarx.SocialMetabolism
 import LeanMarx.Demand
 import LeanMarx.RentTheory
 import LeanMarx.Shares
+import LeanMarx.ProfitRate
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -164,7 +165,30 @@ labour, not by the number of monopolies as such. More or larger monopolies
 raise `V` and lower the wage share; one large monopoly can outweigh many
 small ones.
 
-## 15. Surplus value (`LeanMarx/Surplus`)
+## 15. Recovering the average profit rate (`LeanMarx/ProfitRate`)
+
+The average profit rate is the price difference over total input cost:
+
+```
+averageProfitRate = (revenue − cost) / cost,
+cost = p · (A x) + w · (l · x),   revenue = p · (B x).
+```
+
+| Result | Statement |
+|---|---|
+| `totalRevenue_sub_totalInputCost` | profit = `p·netOutput − w·employment` |
+| `averageProfitRate_costPrice` | cost prices leave zero profit |
+| `averageProfitRate_eq_of_profitRatePrice` | a Sraffa price with uniform `r` returns exactly `r` |
+| `marketPrice_profit_eq_rent` | at model prices, profit is the rent |
+| `averageProfitRate_marketPrice_eq_rent_div` | the rate is rent over total input cost |
+
+So the rate on capital advanced is `R / (p A x + w l x)`, which is neither the
+markup `μ` nor the rent share of net output `R/(wL+R)`.  A *uniform* rate is
+recovered only from prices satisfying `p B = (1+r)(p A + w l)`; the model's
+labour-value markup prices generally do not, so the recovered number is an
+average, and the transformation problem reappears in the denominator.
+
+## 16. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
