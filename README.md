@@ -359,11 +359,19 @@ growth probability rises with size: larger `α` means a heavier tail.
 | Result | Statement |
 |---|---|
 | `stationaryMass_eq` | the factored form |
+| `deadMass_eq` | `π₀ = 1/(1+eΣA)` |
+| `activeShare_add_deadMass` | active share `+` dead mass `= 1` |
 | `zeroMass_strictAnti` | lower entry raises the zero-wealth mass |
 | `activeShare_strictMono` | higher entry raises the active sector |
 | `throughput_strictMono` | higher entry raises the gross inflow up the ladder |
 | `conditionalMass_eq` | the distribution among active firms is entry-free |
 | `mass_ratio` (FirmSize) | the tail ratio is entry-free |
+
+Here `π₀` is the **dead / zero-wealth mass**: the stationary share of the
+population in state `0`, which is a single reservoir standing for both a
+bankrupt producer and an agent that has not entered. State `0` carries zero
+capital, so `π₀` is also the share of agents with zero wealth. The active
+share is exactly `1 − π₀` (`activeShare_add_deadMass`).
 
 Entry is the extensive margin. It changes how many agents are active and how
 much flow passes up the ladder; it does not change the shape of the

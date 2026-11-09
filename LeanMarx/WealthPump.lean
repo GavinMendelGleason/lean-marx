@@ -97,9 +97,30 @@ theorem zeroMass_strictAnti (α : ℝ) (N : ℕ) (hα : 0 < α) (hN : 1 ≤ N)
   rw [div_lt_div_iff₀ h₂ h₁]
   nlinarith
 
+/-- **Dead mass / zero-wealth mass.** The stationary share of the population
+in state `0`: producers that have failed, or agents that have not entered.
+State `0` carries zero capital by construction, so `deadMass` is also the
+share of agents with zero wealth. -/
+noncomputable def deadMass (α e : ℝ) (N : ℕ) : ℝ :=
+  stationaryMass α e N 0
+
+theorem deadMass_eq (α e : ℝ) (N : ℕ) (hα : 0 < α) (hN : 1 ≤ N) :
+    deadMass α e N = 1 / (1 + e * profileSum α N) := by
+  unfold deadMass
+  rw [stationaryMass_eq α e N hα 0 (Nat.zero_le N)]
+  simp
+
 /-- Mass of the active firms. -/
 noncomputable def activeShare (α e : ℝ) (N : ℕ) : ℝ :=
   ∑ k ∈ Finset.range N, stationaryMass α e N (k + 1)
+
+/-- The active share plus the dead mass is the whole population. -/
+theorem activeShare_add_deadMass (α e : ℝ) (N : ℕ) (hN : 1 ≤ N) (hα : 0 < α)
+    (he : 0 < e) : activeShare α e N + deadMass α e N = 1 := by
+  unfold activeShare deadMass
+  rw [← Finset.sum_range_succ']
+  exact sum_stationaryMass α e N hN hα he
+
 
 theorem activeShare_eq (α e : ℝ) (N : ℕ) (hα : 0 < α) (hN : 1 ≤ N) :
     activeShare α e N = e * profileSum α N / (1 + e * profileSum α N) := by
