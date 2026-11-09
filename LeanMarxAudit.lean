@@ -175,3 +175,7 @@ import LeanMarx
 #print axioms LeanMarx.gapInvestment_pos
 #print axioms LeanMarx.gapPath_eq
 #print axioms LeanMarx.gap_tendsto_zero
+#print axioms LeanMarx.ProductionTable.valueProfitRate_eq_rate_div
+#print axioms LeanMarx.profitRate_antitone_constant
+#print axioms LeanMarx.profitRate_mono_surplus
+#print axioms LeanMarx.profitRate_falls

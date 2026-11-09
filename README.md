@@ -578,6 +578,39 @@ the `RentTheory` and `ProfitDistribution` layers.  The equalization model is
 the negative feedback; the rent model is the positive dispersion.  A complete
 account needs both.
 
+## The tendency of the rate of profit to fall
+
+The value rate of profit decomposes as
+
+```
+r = S / (C + V) = (S/V) / (C/V + 1).
+```
+
+| Result | Statement |
+|---|---|
+| `rateOfSurplusValue` | `S/V` |
+| `organicComposition` | `C/V` |
+| `valueProfitRate_eq_rate_div` | `r = (S/V)/(C/V + 1)` |
+| `profitRate_antitone_constant` | higher constant capital lowers `r` |
+| `profitRate_mono_surplus` | higher surplus value raises `r` |
+| `profitRate_falls` | `C` rises while `S` does not: `r` falls |
+
+The determinant is the **value** composition `C/V` — the organic composition —
+relative to the rate of surplus value `S/V`.  The physical volume of means of
+production per worker is the *technical* composition; it is not what enters
+`r`.  A rising physical capital–labour ratio can coexist with a falling `C/V`
+if productivity cheapens the means of production, and a rising `S/V` can
+offset the rise in `C/V`.  So "increasing total volume of commodities relative
+to labour" captures the tendency only if it means the value of capital
+advanced per unit of variable capital, not physical volume or output per
+worker.
+
+The model gives the **condition**, not the trend.  It does not yet endogenise
+the technical change that raises `C/V`, nor the counteracting tendencies.  The
+dynamic version needs an investment/technical-change process and a productivity
+process that cheapens constant capital and raises `S/V`; the trend is the
+outcome of their relative speeds.
+
 ## Social metabolism: labour, price and rent
 
 `LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour

@@ -22,6 +22,7 @@ import LeanMarx.Comparative
 import LeanMarx.ValueDetermination
 import LeanMarx.LabourContent
 import LeanMarx.Equalization
+import LeanMarx.TRPF
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -308,7 +309,30 @@ flows (`γ > 0`), decreasing returns (`β > 0`), and no overshoot
 (`β γ < 1`).  It is a tendency, not a law: barriers, rents, capital-intensity
 differences, innovation and market power sustain dispersion.
 
-## 22. Surplus value (`LeanMarx/Surplus`)
+## 22. The tendency of the rate of profit to fall (`LeanMarx/TRPF`)
+
+The value rate of profit decomposes as
+
+`r = S / (C + V) = (S/V) / (C/V + 1)`.
+
+The determinant is the value composition `C/V` (the organic composition),
+relative to the rate of surplus value `S/V`; the physical volume of means of
+production per worker is only the technical composition.
+
+| Result | Statement |
+|---|---|
+| `rateOfSurplusValue` | `S/V` |
+| `organicComposition` | `C/V` |
+| `valueProfitRate_eq_rate_div` | `r = (S/V)/(C/V + 1)` |
+| `profitRate_antitone_constant` | higher `C` lowers `r` |
+| `profitRate_mono_surplus` | higher `S` raises `r` |
+| `profitRate_falls` | `C` rises and `S` does not: `r` falls |
+
+This is the condition, not an endogenous trend: the model does not yet
+generate the technical change that raises `C/V`, nor the counteracting
+tendencies (a rising `S/V`, the cheapening of constant capital).
+
+## 23. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
