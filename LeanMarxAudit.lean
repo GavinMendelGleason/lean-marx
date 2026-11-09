@@ -100,6 +100,11 @@ import LeanMarx
 #print axioms LeanMarx.aggregatePrice_eq_labour_add_rent
 #print axioms LeanMarx.aggregatePrice_eq_of_no_monopoly
 #print axioms LeanMarx.aggregateRent_eq_sum_monopolies
+#print axioms LeanMarx.ProducerTable.rent_mono_markup
+#print axioms LeanMarx.ProducerTable.rent_pos_iff
+#print axioms LeanMarx.ProducerTable.rent_eq_zero_of_two_producers
+#print axioms LeanMarx.ProducerTable.rent_eq_zero_of_output_zero
+#print axioms LeanMarx.ProducerTable.aggregateRent_mono_markup
 #print axioms LeanMarx.price_pressure
 #print axioms LeanMarx.canReproduce_iff_gap_nonpos
 #print axioms LeanMarx.below_reproductionWage

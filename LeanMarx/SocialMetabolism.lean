@@ -156,6 +156,58 @@ theorem monopsony_rent_neg (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
   rw [rent_of_monopoly T hmono]
   exact mul_neg_of_neg_of_pos (mul_neg_of_neg_of_pos hμ (mul_pos hw hv)) hy
 
+/-- **Rent scales with the wedge.** Under monopoly, rent is monotone in `μ`. -/
+theorem rent_mono_markup (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ₁ μ₂ : ι → ℝ} {y : ι → ℝ} {c : ι} (hmono : T.IsMonopoly c)
+    (hwv : 0 ≤ w * v c) (hy : 0 ≤ y c) (h : μ₁ c ≤ μ₂ c) :
+    T.rent v w μ₁ y c ≤ T.rent v w μ₂ y c := by
+  rw [rent_of_monopoly T hmono, rent_of_monopoly T hmono]
+  exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h hwv) hy
+
+/-- **Rent is positive exactly when the wedge is positive**, at a monopoly
+with positive wage, labour value and output. -/
+theorem rent_pos_iff (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ : ι → ℝ} {y : ι → ℝ} {c : ι} (hmono : T.IsMonopoly c)
+    (hw : 0 < w) (hv : 0 < v c) (hy : 0 < y c) :
+    0 < T.rent v w μ y c ↔ 0 < μ c := by
+  rw [rent_of_monopoly T hmono]
+  constructor
+  · intro h
+    by_contra hμ
+    have hμ' : μ c ≤ 0 := le_of_not_gt hμ
+    have hneg : μ c * (w * v c) * y c ≤ 0 :=
+      mul_nonpos_of_nonpos_of_nonneg
+        (mul_nonpos_of_nonpos_of_nonneg hμ' (mul_pos hw hv).le) hy.le
+    linarith
+  · intro h
+    exact mul_pos (mul_pos h (mul_pos hw hv)) hy
+
+/-- No output, no rent. -/
+theorem rent_eq_zero_of_output_zero (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ : ι → ℝ} {y : ι → ℝ} {c : ι} (hy : y c = 0) :
+    T.rent v w μ y c = 0 := by
+  unfold rent
+  rw [hy, mul_zero]
+
+/-- No labour value, no rent. -/
+theorem rent_eq_zero_of_value_zero (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ : ι → ℝ} {y : ι → ℝ} {c : ι} (hv : v c = 0) :
+    T.rent v w μ y c = 0 := by
+  simp [rent, marketPrice, hv]
+
+/-- No wage, no rent. -/
+theorem rent_eq_zero_of_wage_zero (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ : ι → ℝ} {y : ι → ℝ} {c : ι} (hw : w = 0) :
+    T.rent v w μ y c = 0 := by
+  simp [rent, marketPrice, hw]
+
+/-- **A second producer destroys the rent.** With two or more producers of a
+commodity there is no wedge and no rent. -/
+theorem rent_eq_zero_of_two_producers (T : ProducerTable ι φ) {v : ι → ℝ}
+    {w : ℝ} {μ : ι → ℝ} {y : ι → ℝ} {c : ι}
+    (h : 2 ≤ (T.producersOf c).card) : T.rent v w μ y c = 0 :=
+  rent_of_not_monopoly T (not_isMonopoly_of_two h)
+
 /-- Total rent. -/
 noncomputable def aggregateRent (T : ProducerTable ι φ) (v : ι → ℝ) (w : ℝ)
     (μ : ι → ℝ) (y : ι → ℝ) : ℝ := ∑ c, T.rent v w μ y c
@@ -165,6 +217,17 @@ theorem aggregateRent_eq_gap_dot (T : ProducerTable ι φ) (v : ι → ℝ) (w :
     T.aggregateRent v w μ y = priceGap (T.marketPrice v w μ) v w ⬝ᵥ y := by
   unfold aggregateRent rent priceGap dotProduct
   rfl
+
+/-- **Aggregate rent rises with every wedge.** -/
+theorem aggregateRent_mono_markup (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ₁ μ₂ : ι → ℝ} {y : ι → ℝ} (hw : 0 ≤ w) (hv : ∀ c, 0 ≤ v c)
+    (hy : ∀ c, 0 ≤ y c) (h : ∀ c, μ₁ c ≤ μ₂ c) :
+    T.aggregateRent v w μ₁ y ≤ T.aggregateRent v w μ₂ y := by
+  unfold aggregateRent
+  refine Finset.sum_le_sum fun c _ => ?_
+  by_cases hmono : T.IsMonopoly c
+  · exact rent_mono_markup T hmono (mul_nonneg hw (hv c)) (hy c) (h c)
+  · rw [rent_of_not_monopoly T hmono, rent_of_not_monopoly T hmono]
 
 end ProducerTable
 

@@ -425,6 +425,34 @@ So the two-number summary is `(L, P)` with `P = w L + R`. The defect between
 labour and price is exactly the rent term, and it is non-zero only where
 market power exists — a single producer of an indexed commodity.
 
+**What produces rent.** The incidence is
+
+```
+rent c = μ c · w · v c · y c,
+```
+
+so rent is larger when the wedge `μ` is larger, the wage is higher, the
+commodity is more labour-intensive, and its output is larger. The necessary
+conditions are tight:
+
+| Result | Statement |
+|---|---|
+| `rent_of_not_monopoly` | no single producer, no wedge, no rent |
+| `rent_eq_zero_of_two_producers` | a second producer destroys the monopoly and the rent |
+| `rent_pos_iff` | under monopoly, with `w, v c, y c > 0`, rent `> 0` iff `μ c > 0` |
+| `rent_eq_zero_of_output_zero` | no output, no rent |
+| `rent_eq_zero_of_value_zero` | no labour value, no rent |
+| `rent_eq_zero_of_wage_zero` | no wage, no rent |
+| `rent_mono_markup`, `aggregateRent_mono_markup` | rent rises with the wedge |
+
+The deeper determinants are outside the formalisation but visible in it:
+demand inelasticity (the subsistence floor keeps necessity demand at least
+`b`, `lesDemand_ge_floor`), barriers to entry (the single-producer condition
+must persist), network bottlenecks (single-supplier positions in a sparse
+input–output network), and contestability (`μ` must be exercised; a
+contestable monopolist with `μ = 0` earns nothing). A full theory would
+derive `μ` from demand elasticity and entry costs; here it is exogenous.
+
 ## Demand, reproduction and the bottom
 
 `LeanMarx/Demand.lean` adds the population's spending. People have two income
