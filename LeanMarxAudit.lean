@@ -101,3 +101,16 @@ import LeanMarx
 #print axioms LeanMarx.aggregatePrice_eq_of_no_monopoly
 #print axioms LeanMarx.aggregateRent_eq_sum_monopolies
 #print axioms LeanMarx.price_pressure
+#print axioms LeanMarx.canReproduce_iff_gap_nonpos
+#print axioms LeanMarx.below_reproductionWage
+#print axioms LeanMarx.canReproduce_iff_labourNeeded_le
+#print axioms LeanMarx.labourNeeded_antitone
+#print axioms LeanMarx.reproduction_pressure
+#print axioms LeanMarx.lesDemand_budget_surplus
+#print axioms LeanMarx.lesDemand_budget_rationed
+#print axioms LeanMarx.lesDemand_ge_floor
+#print axioms LeanMarx.lesDemand_le_floor_of_rationed
+#print axioms LeanMarx.expenditure_add_saving
+#print axioms LeanMarx.Population.aggregate_budget
+#print axioms LeanMarx.Population.pure_worker_wage_floor
+#print axioms LeanMarx.Population.cannot_reproduce_rationed

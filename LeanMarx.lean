@@ -12,6 +12,7 @@ import LeanMarx.Death
 import LeanMarx.FirmSize
 import LeanMarx.WealthPump
 import LeanMarx.SocialMetabolism
+import LeanMarx.Demand
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -126,7 +127,18 @@ single producer of a commodity: `p c = (1 + μ c) w v c` under monopoly,
 The aggregate identity is `P = w L + R`, and `R` is zero exactly when no
 commodity is monopolised.
 
-## 12. Surplus value (`LeanMarx/Surplus`)
+## 12. Demand, reproduction and the bottom (`LeanMarx/Demand`)
+
+People earn from labour and capital, then split income between consumption
+and investment. A subsistence basket `b` has cost `p·b`; income below it
+means the worker cannot reproduce. Preferences are Stone–Geary: buy `b`
+first, then spend the surplus in value shares; below subsistence demand is a
+rationed multiple of `b`. Saving is only possible out of the surplus, and
+expenditure plus saving equals income, individually and in aggregate. For a
+pure worker reproduction requires `w ≥ (p·b)/labour`, the wage floor that
+puts pressure on the bottom.
+
+## 13. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

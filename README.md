@@ -425,6 +425,62 @@ So the two-number summary is `(L, P)` with `P = w L + R`. The defect between
 labour and price is exactly the rent term, and it is non-zero only where
 market power exists — a single producer of an indexed commodity.
 
+## Demand, reproduction and the bottom
+
+`LeanMarx/Demand.lean` adds the population's spending. People have two income
+sources,
+
+```
+income i = w * labour i + π * capital i,
+```
+
+and split income between consumption and investment.
+
+**Subsistence.** A basket `b` is required to reproduce the worker; its cost is
+`p · b`. Income below it leaves a reproduction gap and the worker cannot
+reproduce.
+
+**Preferences.** Demand is Stone–Geary / linear expenditure:
+
+```
+c i = b i + (y − p·b) α i / p i     if y ≥ p·b,
+c i = (y / (p·b)) b i               if y < p·b,
+```
+
+with `α ≥ 0`, `Σ α = 1`. The floor is bought first, the surplus is spent in
+fixed value shares, and below subsistence demand is a rationed multiple of
+the basket.
+
+**Investment.** Saving is only possible out of the surplus:
+`0 ≤ s ≤ y − p·b`. Consumption is funded by `y − s`, and expenditure plus
+saving equals income.
+
+| Result | Statement |
+|---|---|
+| `canReproduce_iff_gap_nonpos` | reproduction iff the gap is non-positive |
+| `below_reproductionWage` | `w < (p·b)/L` ⇒ full-time work is short |
+| `canReproduce_iff_labourNeeded_le` | reproduction iff required hours ≤ endowment |
+| `labourNeeded_antitone` | capital income substitutes for labour |
+| `reproduction_pressure` | income below subsistence ⇒ required hours exceed the endowment |
+| `lesDemand_budget_surplus` | above subsistence, demand exhausts income |
+| `lesDemand_budget_rationed` | below subsistence, demand still exhausts income |
+| `lesDemand_ge_floor` | above subsistence, demand is at least the basket |
+| `lesDemand_le_floor_of_rationed` | below subsistence, demand is at most the basket |
+| `expenditure_add_saving` | expenditure + saving = income |
+| `aggregate_budget` | the same in aggregate |
+| `pure_worker_wage_floor` | a pure worker reproduces iff `w ≥ (p·b)/labour` |
+| `cannot_reproduce_rationed` | a worker below subsistence is rationed below the basket |
+
+The bottom pressure is the reproduction constraint: for a pure worker,
+`w ≥ (p·b)/L`. Below that wage the full labour endowment cannot buy the
+subsistence basket, the worker is rationed below `b`, and the required hours
+exceed the endowment. This is the mechanism that puts a floor under the wage
+and drives distress at the bottom.
+
+The demand system is the standard Stone–Geary/LES form in reduced form; its
+properties (budget, floor, rationing, saving) are proved, while the
+utility-maximisation problem that generates it is not derived.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -456,6 +512,7 @@ LeanMarx/Death.lean          Gaussian death probability around the average
 LeanMarx/FirmSize.lean       finite growth/death/entry chain, stationary power law
 LeanMarx/WealthPump.lean     entry decomposition, active sector, throughput
 LeanMarx/SocialMetabolism.lean  labour values, price gaps, rent, supply/demand
+LeanMarx/Demand.lean         income, subsistence floors, Stone–Geary demand, saving
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit
