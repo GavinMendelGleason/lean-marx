@@ -380,6 +380,51 @@ exponent. Measured inequality across the whole population rises when entry
 falls, because the zero-wealth mass grows. The intensity of the pump itself is
 set by the size dependence of growth and death, not by entry.
 
+## Social metabolism: labour, price and rent
+
+`LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour
+value `v c` and price `p c`.
+
+Labour value is recursive (`isLabourValue_iff_recursion`):
+
+```
+v B = l + v A.
+```
+
+For a single-output producer this reads
+`v (output p) = labour p + Σ i, v i * input i p`
+(`producer_recursion_pointwise`): direct labour plus the labour embodied in
+inputs, integrated recursively.
+
+Prices are market prices. A rent wedge exists only where a commodity has a
+single producer (`IsMonopoly c`, i.e. `producersOf c` has one element):
+
+```
+p c = (1 + μ c) * w * v c   if monopolised,
+p c = w * v c               otherwise.
+```
+
+`μ > 0` is monopoly rent (price above value); `μ < 0` is monopsony rent
+(suppliers paid below value). With two or more producers there is no wedge
+(`not_isMonopoly_of_two`).
+
+| Result | Statement |
+|---|---|
+| `marketPrice_of_monopoly` | monopoly price includes the wedge |
+| `marketPrice_of_not_monopoly` | competitive price equals the labour value |
+| `rent_of_monopoly` | rent `= μ c * (w * v c) * y c` |
+| `rent_of_not_monopoly` | rent is zero |
+| `monopoly_rent_pos`, `monopsony_rent_neg` | signs of the rent |
+| `aggregatePrice_eq_labour_add_rent` | `P = w L + R` |
+| `aggregatePrice_eq_of_no_monopoly` | no monopoly ⇒ `P = w L` |
+| `aggregateRent_eq_sum_monopolies` | `R` is the sum over monopolised commodities |
+| `price_pressure` | positive excess demand raises the price |
+| `monopoly_price_quantity` | a monopoly markup lowers the quantity sold |
+
+So the two-number summary is `(L, P)` with `P = w L + R`. The defect between
+labour and price is exactly the rent term, and it is non-zero only where
+market power exists — a single producer of an indexed commodity.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
@@ -410,6 +455,7 @@ LeanMarx/Startups.lean       startup funding, entry, expected payoff
 LeanMarx/Death.lean          Gaussian death probability around the average
 LeanMarx/FirmSize.lean       finite growth/death/entry chain, stationary power law
 LeanMarx/WealthPump.lean     entry decomposition, active sector, throughput
+LeanMarx/SocialMetabolism.lean  labour values, price gaps, rent, supply/demand
 LeanMarx.lean                library root with overview
 LeanMarxDemo.lean            worked tables (single product, joint production)
 LeanMarxAudit.lean           #print axioms audit

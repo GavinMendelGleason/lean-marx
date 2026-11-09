@@ -11,6 +11,7 @@ import LeanMarx.Startups
 import LeanMarx.Death
 import LeanMarx.FirmSize
 import LeanMarx.WealthPump
+import LeanMarx.SocialMetabolism
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -116,7 +117,16 @@ conditional distribution among active firms and the Pareto exponent
 unchanged. The pump's intensity is set by the size dependence of growth and
 death, not by entry.
 
-## 11. Surplus value (`LeanMarx/Surplus`)
+## 11. Social metabolism: labour, price and rent (`LeanMarx/SocialMetabolism`)
+
+Two numbers per commodity: labour value `v c` (recursive embodiment
+`v B = l + v A`) and market price `p c`. A rent wedge is available only to a
+single producer of a commodity: `p c = (1 + μ c) w v c` under monopoly,
+`p c = w v c` otherwise. `μ > 0` is monopoly rent, `μ < 0` monopsony rent.
+The aggregate identity is `P = w L + R`, and `R` is zero exactly when no
+commodity is monopolised.
+
+## 12. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

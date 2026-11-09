@@ -89,3 +89,15 @@ import LeanMarx
 #print axioms LeanMarx.activeShare_strictMono
 #print axioms LeanMarx.throughput_strictMono
 #print axioms LeanMarx.conditionalMass_eq
+#print axioms LeanMarx.isLabourValue_iff_recursion
+#print axioms LeanMarx.producer_recursion_pointwise
+#print axioms LeanMarx.ProducerTable.marketPrice_of_monopoly
+#print axioms LeanMarx.ProducerTable.marketPrice_of_not_monopoly
+#print axioms LeanMarx.ProducerTable.rent_of_monopoly
+#print axioms LeanMarx.ProducerTable.rent_of_not_monopoly
+#print axioms LeanMarx.ProducerTable.monopoly_rent_pos
+#print axioms LeanMarx.ProducerTable.monopsony_rent_neg
+#print axioms LeanMarx.aggregatePrice_eq_labour_add_rent
+#print axioms LeanMarx.aggregatePrice_eq_of_no_monopoly
+#print axioms LeanMarx.aggregateRent_eq_sum_monopolies
+#print axioms LeanMarx.price_pressure
