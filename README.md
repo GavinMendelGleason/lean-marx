@@ -632,6 +632,38 @@ dynamic version needs an investment/technical-change process and a productivity
 process that cheapens constant capital and raises `S/V`; the trend is the
 outcome of their relative speeds.
 
+## `r` versus `g`: the aggregate wealth pump
+
+Piketty's comparison is the return on capital `r` against growth `g`.  The
+model already has both objects: `Dynamics.wealthAt` grows capital at the
+profit rate, and `Dynamics.BalancedPath.g` is the balanced growth rate.
+
+| Result | Statement |
+|---|---|
+| `wealthIncomeRatio_tendsto_atTop` | `r > g` makes the wealth/income ratio grow without bound |
+| `wealthIncomeRatio_tendsto_zero` | `r < g` makes it vanish |
+| `capitalOutput_grows_iff` | with saving rate `s`, `β = K/Y` grows iff `s r > g` |
+| `capitalShare_strictMono_beta` | the capital share `α = r β` rises with `β` |
+
+There are two different “wealth pumps”:
+
+- **Piketty's aggregate pump.** `r > g` (or `s r > g` with saving) raises the
+  wealth/income ratio and the capital share relative to labour.
+- **The model's entry/exit pump.** `WealthPump` describes the stationary
+  distribution among firms and owners through entry, growth and death.  It
+  shapes the distribution *among* wealth holders, not the aggregate
+  capital/labour share.
+
+A uniform return on capital preserves shares among capitalists
+(`Circuit.circuitStep_share`); `r > g` raises the capital share, but it does
+not by itself concentrate wealth among capitalists.  Concentration among
+owners needs heterogeneous returns or the entry/exit/selection mechanism.
+
+Rent is a **component** of the return, not the whole of it.  A higher rent rate
+raises `r` and makes `r > g` more likely, but the mapping from rent to capital
+income depends on how the rent is capitalized; the model's rent is a markup on
+labour value, not a return on capital.
+
 ## Social metabolism: labour, price and rent
 
 `LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour

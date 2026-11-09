@@ -23,6 +23,7 @@ import LeanMarx.ValueDetermination
 import LeanMarx.LabourContent
 import LeanMarx.Equalization
 import LeanMarx.TRPF
+import LeanMarx.Piketty
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -332,7 +333,26 @@ This is the condition, not an endogenous trend: the model does not yet
 generate the technical change that raises `C/V`, nor the counteracting
 tendencies (a rising `S/V`, the cheapening of constant capital).
 
-## 23. Surplus value (`LeanMarx/Surplus`)
+## 23. `r` versus `g`: the aggregate wealth pump (`LeanMarx/Piketty`)
+
+Piketty's comparison is the return on capital `r` against growth `g`.  The
+model has both: `Dynamics.wealthAt` grows capital at the profit rate, and
+`Dynamics.BalancedPath.g` is the balanced growth rate.
+
+| Result | Statement |
+|---|---|
+| `wealthIncomeRatio_tendsto_atTop` | `r > g` makes the wealth/income ratio grow without bound |
+| `wealthIncomeRatio_tendsto_zero` | `r < g` makes it vanish |
+| `capitalOutput_grows_iff` | with saving rate `s`, `β = K/Y` grows iff `s r > g` |
+| `capitalShare_strictMono_beta` | the capital share `α = r β` rises with `β` |
+
+`r > g` raises the capital share relative to labour.  It does not, by itself,
+concentrate wealth among capitalists: a uniform return preserves shares
+(`Circuit.circuitStep_share`).  Concentration among owners needs heterogeneous
+returns or the entry/exit wealth pump of `WealthPump`.  Rent is a component of
+the return, not the whole of it.
+
+## 24. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
