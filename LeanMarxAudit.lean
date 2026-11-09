@@ -170,3 +170,8 @@ import LeanMarx
 #print axioms LeanMarx.ProductionTable.isLabourValue_independent_of_prices
 #print axioms LeanMarx.ProductionTable.existsUnique_labourValue_independent
 #print axioms LeanMarx.ProductionTable.recover_labourInput
+#print axioms LeanMarx.linearGap_step
+#print axioms LeanMarx.equalizeStep_total
+#print axioms LeanMarx.gapInvestment_pos
+#print axioms LeanMarx.gapPath_eq
+#print axioms LeanMarx.gap_tendsto_zero

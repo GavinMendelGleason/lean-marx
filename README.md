@@ -544,6 +544,40 @@ the dispersion can also drive investment, selection and technical change,
 which changes the technique — and hence future labour content — even though
 the static value equation is independent of it.
 
+## Investment flows and the equalization tendency
+
+Capital flows toward the higher profit rate.  In the two-sector linear model
+
+```
+r i = α i − β K i,        I = γ (r₁ − r₂),
+```
+
+sector 1 receives `I`, sector 2 gives up `I`; total capital is conserved and
+the gap evolves as
+
+```
+g' = (1 − 2 β γ) g.
+```
+
+| Result | Statement |
+|---|---|
+| `linearGap_step` | the gap contracts by `1 − 2 β γ` in one step |
+| `equalizeStep_total` | total capital is conserved |
+| `gapInvestment_pos` | the high-rate sector receives positive investment |
+| `gapPath_eq` | the gap path is geometric |
+| `gap_tendsto_zero` | if `|1 − 2 β γ| < 1`, the gap tends to zero |
+
+The condition is: responsive flows (`γ > 0`), decreasing returns (`β > 0`),
+and no overshoot (`β γ < 1`).  The gap shrinks monotonically for
+`0 < β γ < 1/2`, oscillates but converges for `1/2 < β γ < 1`, and does not
+converge for `β γ ≥ 1`.
+
+This is a **tendency**, not a law.  Barriers to entry, rents, differences in
+capital intensity, innovation and market power sustain dispersion; those are
+the `RentTheory` and `ProfitDistribution` layers.  The equalization model is
+the negative feedback; the rent model is the positive dispersion.  A complete
+account needs both.
+
 ## Social metabolism: labour, price and rent
 
 `LeanMarx/SocialMetabolism.lean` keeps the two numbers per commodity: labour

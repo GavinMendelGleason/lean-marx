@@ -21,6 +21,7 @@ import LeanMarx.Banking
 import LeanMarx.Comparative
 import LeanMarx.ValueDetermination
 import LeanMarx.LabourContent
+import LeanMarx.Equalization
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -284,7 +285,30 @@ So determination is independent of dispersion; identification from prices
 requires the production coefficients and the rate vector, and is not possible
 from prices alone.
 
-## 21. Surplus value (`LeanMarx/Surplus`)
+## 21. Investment flows and equalization (`LeanMarx/Equalization`)
+
+Capital flows toward the higher profit rate.  In the two-sector linear model
+
+`r i = α i − β K i`,   `I = γ (r₁ − r₂)`,
+
+total capital is conserved and the gap contracts:
+
+`g' = (1 − 2 β γ) g`.
+
+| Result | Statement |
+|---|---|
+| `linearGap_step` | the gap contracts by `1 − 2 β γ` in one step |
+| `equalizeStep_total` | total capital is conserved |
+| `gapInvestment_pos` | the high-rate sector receives positive investment |
+| `gapPath_eq` | the gap path is geometric |
+| `gap_tendsto_zero` | if `|1 − 2 β γ| < 1`, the gap tends to zero |
+
+This is the classical equalization tendency, with its condition: responsive
+flows (`γ > 0`), decreasing returns (`β > 0`), and no overshoot
+(`β γ < 1`).  It is a tendency, not a law: barriers, rents, capital-intensity
+differences, innovation and market power sustain dispersion.
+
+## 22. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a
