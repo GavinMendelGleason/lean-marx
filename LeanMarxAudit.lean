@@ -179,3 +179,4 @@ import LeanMarx
 #print axioms LeanMarx.profitRate_antitone_constant
 #print axioms LeanMarx.profitRate_mono_surplus
 #print axioms LeanMarx.profitRate_falls
+#print axioms LeanMarx.profitRate_growth_iff

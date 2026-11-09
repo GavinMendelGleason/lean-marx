@@ -80,4 +80,30 @@ theorem profitRate_falls {S₁ S₂ C₁ C₂ V : ℝ} (hV : 0 < V)
   nlinarith [mul_le_mul_of_nonneg_right hS h₁.le,
     mul_le_mul_of_nonneg_left hC hS₁]
 
+/-- **The keep-pace condition.** With surplus value growing at `gS`, constant
+capital at `gC` and variable capital at `gV`, the profit rate does not fall iff
+
+`gS ≥ (C gC + V gV) / (C + V)`.
+
+The required surplus-value growth is the capital-weighted average of the
+capital growth rates.  Cheapening of constant capital (a negative contribution
+to `gC`) or of wage goods (a negative contribution to `gV`) lowers the
+required rate; mechanisation (a positive `gC`) raises it. -/
+theorem profitRate_growth_iff {S C V gS gC gV : ℝ} (hS : 0 < S) (hC : 0 < C)
+    (hV : 0 < V) (hgC : -1 < gC) (hgV : -1 < gV) :
+    S * (1 + gS) / (C * (1 + gC) + V * (1 + gV)) ≥ S / (C + V)
+      ↔ gS ≥ (C * gC + V * gV) / (C + V) := by
+  have hden : 0 < C + V := by linarith
+  have hC' : 0 < C * (1 + gC) := mul_pos hC (by linarith)
+  have hV' : 0 < V * (1 + gV) := mul_pos hV (by linarith)
+  have hden' : 0 < C * (1 + gC) + V * (1 + gV) := by linarith
+  rw [ge_iff_le, div_le_div_iff₀ hden hden']
+  constructor
+  · intro h
+    rw [ge_iff_le, div_le_iff₀ hden]
+    nlinarith
+  · intro h
+    rw [ge_iff_le, div_le_iff₀ hden] at h
+    nlinarith
+
 end LeanMarx

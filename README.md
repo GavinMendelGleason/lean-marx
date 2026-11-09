@@ -605,6 +605,27 @@ to labour" captures the tendency only if it means the value of capital
 advanced per unit of variable capital, not physical volume or output per
 worker.
 
+### The keep-pace condition
+
+With surplus value growing at `gS`, constant capital at `gC` and variable
+capital at `gV`, the profit rate does not fall iff
+
+```
+gS ≥ (C gC + V gV) / (C + V).
+```
+
+| Result | Statement |
+|---|---|
+| `profitRate_growth_iff` | `r' ≥ r` iff the surplus-value growth is at least the capital-weighted average of `gC` and `gV` |
+
+The required surplus-value growth is the capital-weighted average of the
+capital growth rates.  Cheapening of constant capital (a negative `gC`) or of
+wage goods (a negative `gV`) lowers the required rate; mechanisation (a
+positive `gC`) raises it.  So there is no single "technological frontier
+advancement rate": the condition is a **balance of rates** — capital-goods
+productivity, wage-goods productivity, and the rate of surplus value relative
+to physical capital deepening.
+
 The model gives the **condition**, not the trend.  It does not yet endogenise
 the technical change that raises `C/V`, nor the counteracting tendencies.  The
 dynamic version needs an investment/technical-change process and a productivity
