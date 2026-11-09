@@ -161,3 +161,9 @@ import LeanMarx
 #print axioms LeanMarx.priceGap_eq_zero_iff
 #print axioms LeanMarx.marketPrice_gap_eq
 #print axioms LeanMarx.marketPrice_gap_zero_of_no_monopoly
+#print axioms LeanMarx.marketPrice_rentRate_of_monopoly
+#print axioms LeanMarx.marketPrice_rentRate_of_not_monopoly
+#print axioms LeanMarx.marketPrice_rentRate_ne
+#print axioms LeanMarx.priceValueRatio_eq_of_proportional
+#print axioms LeanMarx.priceValueRatio_eq_one_add_rentRate
+#print axioms LeanMarx.priceValueRatio_ne_of_rentRate_ne

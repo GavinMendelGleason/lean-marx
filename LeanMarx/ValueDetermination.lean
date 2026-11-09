@@ -95,4 +95,72 @@ theorem marketPrice_gap_zero_of_no_monopoly (T : ProducerTable ι φ) (v : ι �
   ext c
   exact T.rent_of_not_monopoly (h c)
 
+/-- **The rent rate is the sectoral wedge.** On a monopolised commodity the
+rent rate at market prices is exactly `μ c`. -/
+theorem marketPrice_rentRate_of_monopoly (T : ProducerTable ι φ) {v : ι → ℝ}
+    {w : ℝ} {μ : ι → ℝ} {c : ι} (h : T.IsMonopoly c) (hw : w ≠ 0)
+    (hv : v c ≠ 0) :
+    rentRate (T.marketPrice v w μ) v w c = μ c := by
+  classical
+  unfold rentRate ProducerTable.marketPrice
+  rw [if_pos h]
+  field_simp [hw, hv]
+  ring
+
+/-- Outside a monopoly the rent rate is zero. -/
+theorem marketPrice_rentRate_of_not_monopoly (T : ProducerTable ι φ) {v : ι → ℝ}
+    {w : ℝ} {μ : ι → ℝ} {c : ι} (h : ¬ T.IsMonopoly c) (hw : w ≠ 0)
+    (hv : v c ≠ 0) :
+    rentRate (T.marketPrice v w μ) v w c = 0 := by
+  classical
+  unfold rentRate ProducerTable.marketPrice
+  rw [if_neg h]
+  field_simp [hw, hv]
+  ring
+
+/-- **Rent rates are not uniform.** Two monopolised commodities with different
+wedges have different rent rates. -/
+theorem marketPrice_rentRate_ne (T : ProducerTable ι φ) {v : ι → ℝ} {w : ℝ}
+    {μ : ι → ℝ} {c d : ι} (hc : T.IsMonopoly c) (hd : T.IsMonopoly d)
+    (hw : w ≠ 0) (hvc : v c ≠ 0) (hvd : v d ≠ 0) (hμ : μ c ≠ μ d) :
+    rentRate (T.marketPrice v w μ) v w c ≠ rentRate (T.marketPrice v w μ) v w d := by
+  rw [marketPrice_rentRate_of_monopoly T hc hw hvc,
+    marketPrice_rentRate_of_monopoly T hd hw hvd]
+  exact hμ
+
+/-- The price-to-value ratio, the object the empirical price–value literature
+measures. -/
+noncomputable def priceValueRatio (p v : ι → ℝ) (c : ι) : ℝ := p c / v c
+
+/-- **Proportional prices have a constant price-to-value ratio.** -/
+theorem priceValueRatio_eq_of_proportional {p v : ι → ℝ} {lam : ℝ} {c : ι}
+    (h : p = lam • v) (hv : v c ≠ 0) : priceValueRatio p v c = lam := by
+  unfold priceValueRatio
+  rw [h]
+  simp [hv]
+
+/-- **The price-to-value ratio is one plus the rent rate, times the wage.** -/
+theorem priceValueRatio_eq_one_add_rentRate {p v : ι → ℝ} {w : ℝ} {c : ι}
+    (hw : w ≠ 0) (hv : v c ≠ 0) :
+    priceValueRatio p v c = (1 + rentRate p v w c) * w := by
+  unfold priceValueRatio
+  have hp := price_eq_rentRate_mul (p := p) (v := v) (w := w) (c := c) hw hv
+  rw [hp]
+  field_simp [hv]
+
+/-- **High correlation is approximate constancy of the ratio.** Two commodities
+with different rent rates have different price-to-value ratios: a dispersion in
+rent rates is exactly a dispersion in the ratio. -/
+theorem priceValueRatio_ne_of_rentRate_ne {p v : ι → ℝ} {w : ℝ} {c d : ι}
+    (hw : w ≠ 0) (hvc : v c ≠ 0) (hvd : v d ≠ 0)
+    (h : rentRate p v w c ≠ rentRate p v w d) :
+    priceValueRatio p v c ≠ priceValueRatio p v d := by
+  intro hEq
+  apply h
+  rw [priceValueRatio_eq_one_add_rentRate hw hvc,
+    priceValueRatio_eq_one_add_rentRate hw hvd] at hEq
+  have h1 : 1 + rentRate p v w c = 1 + rentRate p v w d :=
+    mul_right_cancel₀ hw hEq
+  linarith
+
 end LeanMarx

@@ -463,6 +463,32 @@ on the input matrix, so it changes `v` and `p` together; the correspondence is
 preserved for the new table.  Substitution is therefore the *basis* of the
 labour values, not an alternative determinant of price.
 
+### Non-uniform rent rates and the price-to-value ratio
+
+The rent rate is commodity-specific: `μ c` on a monopolised commodity and `0`
+otherwise.
+
+| Result | Statement |
+|---|---|
+| `marketPrice_rentRate_of_monopoly` | the rent rate is exactly the wedge `μ c` |
+| `marketPrice_rentRate_of_not_monopoly` | the rent rate is zero |
+| `marketPrice_rentRate_ne` | different wedges give different rent rates |
+| `priceValueRatio_eq_of_proportional` | proportional prices have a constant price-to-value ratio |
+| `priceValueRatio_eq_one_add_rentRate` | `p c / v c = (1 + rent rate) * w` |
+| `priceValueRatio_ne_of_rentRate_ne` | a dispersion in rent rates is a dispersion in the ratio |
+
+The empirical price–value literature (Shaikh; Cockshott and Cottrell; Ochoa)
+finds a high correlation between prices and labour values. In this model that
+is a statement about the **ratio** `p / v`: exact proportionality is a constant
+ratio, and a high correlation is an approximately constant ratio. The rent
+rate is the deviation. Non-uniform profit rates are compatible with a high
+correlation when the dispersion of the rate is small relative to the variation
+in labour values — and a *uniform markup on values* already gives perfectly
+proportional prices while profit rates on capital advanced differ by capital
+intensity. So the empirical correlation does not establish uniform rates, and
+the transformation problem is about the systematic deviation, not the
+correlation.
+
 What breaks the determination is distribution and market structure.  The
 decomposition is
 
