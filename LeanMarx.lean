@@ -14,6 +14,7 @@ import LeanMarx.WealthPump
 import LeanMarx.SocialMetabolism
 import LeanMarx.Demand
 import LeanMarx.RentTheory
+import LeanMarx.Shares
 
 /-!
 # Marxian economics in Lean 4: production tables, prices, distribution
@@ -148,7 +149,22 @@ For μ itself, monopoly pricing with linear demand gives
 smaller μ; competition (two or more producers) gives zero. So market power
 sets the potential μ and contestability decides whether it survives.
 
-## 14. Surplus value (`LeanMarx/Surplus`)
+## 14. The wage–capital split (`LeanMarx/Shares`)
+
+`P = w L + R` splits net output into `wageShare = wL/P` and
+`capitalShare = R/P`, which sum to one. Writing
+`V = Σ_{monopolised c} μ c v c y c` for the value-weighted rent,
+
+```
+wageShare = 1 / (1 + V/L),      capitalShare = (V/L) / (1 + V/L).
+```
+
+The wage level cancels: the split is set by value-weighted rent per unit of
+labour, not by the number of monopolies as such. More or larger monopolies
+raise `V` and lower the wage share; one large monopoly can outweigh many
+small ones.
+
+## 15. Surplus value (`LeanMarx/Surplus`)
 
 `S = L (1 − v·b)`: employment less the labour embodied in the real wage. It
 is positive exactly when the value of labour power is below one. Profit is a

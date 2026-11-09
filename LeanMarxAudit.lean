@@ -127,3 +127,10 @@ import LeanMarx
 #print axioms LeanMarx.monopolyMarkup_antitone_elastic
 #print axioms LeanMarx.monopolyMarkup_eq_inv_elasticity
 #print axioms LeanMarx.ProducerTable.marketPrice_determined
+#print axioms LeanMarx.ProducerTable.netOutputValue_eq
+#print axioms LeanMarx.ProducerTable.aggregateRent_eq_w_mul_valueRent
+#print axioms LeanMarx.ProducerTable.wageShare_add_capitalShare
+#print axioms LeanMarx.ProducerTable.wageShare_eq_valueRent
+#print axioms LeanMarx.ProducerTable.capitalShare_eq_valueRent
+#print axioms LeanMarx.ProducerTable.wageShare_antitone_valueRent
+#print axioms LeanMarx.valueRentOn_mono_set

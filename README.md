@@ -549,6 +549,51 @@ So two forces determine μ:
 The linear-demand model is a tractable instance of the general Lerner logic;
 a full theory would add entry costs, bargaining, and dynamics.
 
+### Monopoly and the wage–capital split
+
+Net output splits into wages and rent, and the shares add to one:
+
+```
+wageShare = w L / P,        capitalShare = R / P,        wageShare + capitalShare = 1.
+```
+
+Because `R = w · V` with `V = Σ_{monopolised c} μ c v c y c`, the wage level
+cancels:
+
+```
+wageShare = 1 / (1 + V/L),  capitalShare = (V/L) / (1 + V/L).
+```
+
+| Result | Statement |
+|---|---|
+| `netOutputValue_eq` | `P = wL + R` |
+| `aggregateRent_eq_w_mul_valueRent` | `R = w · V` |
+| `wageShare_add_capitalShare` | the two shares sum to one |
+| `wageShare_eq_valueRent` | `wageShare = 1/(1 + V/L)`; `w` cancels |
+| `capitalShare_eq_valueRent` | `capitalShare = (V/L)/(1 + V/L)` |
+| `wageShare_antitone_valueRent` | more value rent lowers the wage share |
+| `valueRentOn_mono_set` | adding a monopolised commodity raises `V` |
+
+So the number of monopolies matters only through the **value-weighted rent**
+`V = Σ μ c v c y c`: one large monopoly (high μ, high value weight) can outweigh
+many small ones. Adding a monopolised commodity with positive rent raises `V`,
+lowers the wage share, and raises the capital share.
+
+### Income split versus consumption composition
+
+The split above is the split of **income** (wages versus rent). The split of
+**consumption** is a further step, and it depends on the demand system:
+
+- With identical Stone–Geary preferences and every agent above subsistence,
+  aggregate demand is `N b + (Y − N p·b) α/p`; its composition depends on total
+  income, not on its distribution.
+- With the non-homothetic floor and rationing, the composition does depend on
+  the distribution: richer agents spend a smaller share on necessities. The
+  model handles this through the floor and the rationing regime.
+- The model does not give workers and capitalists different preference
+  parameters, so it does not by itself predict a separate `wage-good` and
+  `luxury-good` consumption split; that would need class-specific `(b, α)`.
+
 ## Surplus value
 
 With a real wage bundle `b` (goods per unit of labour), the value of labour
